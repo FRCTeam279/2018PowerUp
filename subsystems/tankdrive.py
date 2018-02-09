@@ -1,15 +1,73 @@
+import math
 import wpilib
 from wpilib.command.subsystem import Subsystem
+from wpilib import SmartDashboard, PIDController
+from wpilib.interfaces import PIDSource, PIDOutput
 
-from commands.driveteleopdefaultskid import DriveTeleopDefaultSkid as DriveTeleopDefaultSkid
-from commands.driveteleopdefaultnfs import DriveTeleopDefaultNFS as DriveTeleopDefaultNFS
+import subsystems
 import robotmap
+from commands.tankdriveteleopdefaultskid import TankDriveTeleopDefaultSkid as TankDriveTeleopDefaultSkid
+from commands.tankdriveteleopdefaultnfs import TankDriveTeleopDefaultNFS as TankDriveTeleopDefaultNFS
+
+
+class TankPID(PIDSource, PIDOutput):
+
+    def __init__(self, minSpeed=0.0):
+        self.minSpeed = minSpeed
+        pass
+
+    def getPIDSourceType(self):
+        return wpilib.pidcontroller.PIDController.PIDSourceType.kDisplacement
+
+    def setPIDSourceType(self, pidSource):
+        pass
+
+    def pidGet(self):
+        return subsystems.driveline.getPIDEncoderCount()
+
+    def pidWrite(self, output):
+        if math.fabs(output) < self.minSpeed:
+            if output < 0.0:
+                subsystems.driveline.driveRaw(-1.0 * self.minSpeed, -1.0 * self.minSpeed)
+            else:
+                subsystems.driveline.driveRaw(self.minSpeed, self.minSpeed)
+        else:
+            subsystems.driveline.driveRaw(output, output)
+
+
+class TankPIDTurn(PIDSource, PIDOutput):
+
+    def __init__(self, minSpeed, scaleSpeed):
+        self.scaleSpeed = scaleSpeed
+        self.minSpeed = minSpeed
+
+    def getPIDSourceType(self):
+        return wpilib.pidcontroller.PIDController.PIDSourceType.kDisplacement
+
+    def setPIDSourceType(self, pidSource):
+        pass
+
+    def pidGet(self):
+        return robotmap.sensors.ahrs.getYaw()
+
+    def pidWrite(self, output):
+        raw = math.fabs(output)
+        raw *= self.scaleSpeed
+        if raw < self.minSpeed:
+            raw = self.minSpeed
+
+        if output > 0.0:
+            subsystems.driveline.driveRaw(raw, -raw)
+        else:
+            subsystems.driveline.driveRaw(-raw, raw)
+
+
 
 
 class TankDrive(Subsystem):
 
     def __init__(self):
-        print('TankDrive init called')
+        print('TankDrive: init called')
         super().__init__('TankDrive')
         self.debug = False
         self.logPrefix = "TankDrive: "
@@ -75,13 +133,28 @@ class TankDrive(Subsystem):
             if not  wpilib.DriverStation.getInstance().isFmsAttached():
                 raise
 
+        # PID Setup
+        self.tankPID = TankPID()
+        self.pidController = PIDController(0.0, 0.0, 0.0, self.tankPID, self.tankPID)
+
+        self.turnPID = TankPIDTurn(0.0, 0.5)
+        self.pidTurnController = PIDController(0.0, 0.0, 0.0, self.turnPID, self.turnPID)
+
+        SmartDashboard.putNumber("DriveEnc Target", 0.0)
+        SmartDashboard.putNumber("DriveEnc P", 0.005)
+        SmartDashboard.putNumber("DriveEnc I", 0.0)
+        SmartDashboard.putNumber("DriveEnc D", 0.0)
+        SmartDashboard.putNumber("DriveEnc Tolerance", 250.0)
+        SmartDashboard.putNumber("DriveEnc MinSpeed", 0.0)
+        SmartDashboard.putNumber("DriveEnc MaxSpeed", 1.0)
+
     # ------------------------------------------------------------------------------------------------------------------
     def initDefaultCommand(self):
         if robotmap.driveLine.controlStyle == "nfs":
-            self.setDefaultCommand(DriveTeleopDefaultNFS())
+            self.setDefaultCommand(TankDriveTeleopDefaultNFS())
             print("{}Default command set to DriveTeleopDefaultNFS".format(self.logPrefix))
         else:
-            self.setDefaultCommand(DriveTeleopDefaultSkid())
+            self.setDefaultCommand(TankDriveTeleopDefaultSkid())
             print("{}Default command set to DriveTeleopDefaultSkid".format(self.logPrefix))
 
     def driveRaw(self, left, right):
@@ -102,3 +175,12 @@ class TankDrive(Subsystem):
         if self.rightSpdCtrl:
             self.rightSpdCtrl.set(0.0)
 
+    def resetEncoders(self):
+        self.leftEncoder.reset()
+        self.rightEncoder.reset()
+
+    def getAvgEncoder(self):
+        return int(round((self.leftEncoder.get() + self.rightEncoder.get()) / 2, 0))
+
+    def getPIDEncoderCount(self):
+        return self.leftEncoder.get()

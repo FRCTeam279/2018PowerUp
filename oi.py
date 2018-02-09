@@ -2,6 +2,8 @@ import math
 from wpilib.joystick import Joystick
 from wpilib.buttons.joystickbutton import JoystickButton
 
+from commands.resetyawangle import ResetYawAngle
+
 
 class T16000M(Joystick):
 
@@ -18,6 +20,7 @@ class T16000M(Joystick):
 leftDriverStick = None
 rightDriverStick = None
 
+resetYawBtn = None
 
 class ConfigHolder:
     pass
@@ -27,7 +30,7 @@ config.leftDriverStickNullZone = 0.05
 config.rightDriverStickNullZone = 0.05
 
 # button indexes
-config.btnResetYawAngleIndex = 7
+config.btnResetYawAngleIndex = 2
 
 
 def init():
@@ -41,9 +44,8 @@ def init():
 
     leftDriverStick = T16000M(0)
     rightDriverStick = T16000M(1)
-
-    # trigger = JoystickButton(joystick, Joystick.ButtonType.kTrigger)
-    # trigger.whenPressed(Crash())
+    resetYawBtn = JoystickButton(rightDriverStick, config.btnResetYawAngleIndex)
+    resetYawBtn.whenPressed(ResetYawAngle())
 
 
 def filterInput(val, deadZone, filterFactor, scale):

@@ -1,3 +1,11 @@
+#PyFRC Deployment config file
+.deploy_cfg
+.pytest_cache
+
+#pyCharm project files
+.idea/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
