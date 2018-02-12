@@ -14,7 +14,7 @@ class ConfigHolder:
 driveLine = ConfigHolder()
 driveLine.leftMotorPort = 0
 driveLine.rightMotorPort = 1
-driveLine.invertLeft = False
+driveLine.invertLeft = True
 driveLine.invertRight = False
 driveLine.speedControllerType = "TALON"
 
@@ -60,9 +60,77 @@ nfs.slowDriveSpeedFactor = 0.7
 
 
 # ----------------------------------------------------------
-# Sensors Config
+# General Sensors Config
 # ----------------------------------------------------------
 sensors = ConfigHolder()
 sensors.hasAHRS = True
+
+
+# ----------------------------------------------------------
+# Elevator Config (Stages 1 and 2)
+# ----------------------------------------------------------
+elevator = ConfigHolder()
+elevator.s1TopLimitPort = 4                 # digital input
+elevator.s1TopLimitNormalClosed = True      # switch is wired to be normally cosed, so will return True when not tripped
+elevator.s1BottomLimitPort = 5              # digital input
+elevator.s1BottomLimitNormalClosed = True   # switch is wired to be normally cosed, so will return True when not tripped
+elevator.s1SpdControllerPort = 3            # pwm
+elevator.s1ScaleSpeedUp = 1.0
+elevator.s1ScaleSpeedDown = 0.7             # gravity assists
+elevator.s1MaxSpeedAtEdgeUp = 0.1           # Maximum speed we should be at when we impact end
+elevator.s1MaxSpeedAtEdgeDown = 0.1           # Maximum speed we should be at when we impact end
+elevator.s1DistanceToTopToStartSlow = 12    # how far away to start scaling speed down to max
+elevator.s1HoldingSpeed = 0.05              # Motor speed required to hold position - used in method #2
+
+elevator.s2TopLimitPort = 6                 # digital input
+elevator.s2TopLimitNormalClosed = True      # switch is wired to be normally cosed, so will return True when not tripped
+elevator.s2BottomLimitPort = 7              # digital input
+elevator.s2BottomLimitNormalClosed = True   # switch is wired to be normally cosed, so will return True when not tripped
+elevator.s2SpdControllerPort = 4            # pwm
+elevator.s2ScaleSpeedUp = 1.0
+elevator.s2ScaleSpeedDown = 0.7             # gravity assists
+elevator.s2MaxSpeedAtEdgeUp = 0.1           # Maximum speed we should be at when we impact end
+elevator.s2MaxSpeedAtEdgeDown = 0.1           # Maximum speed we should be at when we impact end
+elevator.s2DistanceToTopToStartSlow = 12    # how far away to start scaling speed down to max
+elevator.s2HoldingSpeed = 0.05              # Motor speed required to hold position - used in method #2
+
+elevator.heightPotPort = 8                  # analog input
+elevator.heightVoltsPerInch = 0.0637        # change to calculated once min/max is measured
+elevator.heightActualMinVolts = 0.0         # Set via calibration routine
+elevator.heightActualMaxVolts = 5.0         # Set via Calibration routine
+elevator.heightMaxInches = 74               # Measure and record
+
+elevator.s1AutoMoveUpSpeed = 0.5            # How fast to move when doing a move-to-height command
+elevator.s1AutoMoveDownSpeed = 0.3
+elevator.s2AutoMoveUpSpeed = 0.5
+elevator.s2AutoMoveDownSpeed = 0.3
+
+
+# ----------------------------------------------------------
+# Harvester (Stage 3)
+# ----------------------------------------------------------
+harvester = ConfigHolder()
+harvester.rotationPotPort = 9       # analog input
+harvester.relayPort = 0             # relay port
+
+
+# ----------------------------------------------------------
+# Climber
+# ----------------------------------------------------------
+climber = ConfigHolder()
+climber.spdControllerPort = 2       # PWM
+
+# ----------------------------------------------------------
+# Ultrasonics
+# ----------------------------------------------------------
+ultrasonics = ConfigHolder()
+ultrasonics.frontRightPingPort = 99
+ultrasonics.frontRightEchoPort = 99
+#ultrasonics.frontLeftPingPort = 99
+#ultrasonics.frontLeftEchoPort = 99
+
+
+
+
 
 print("RobotMap module completed load")

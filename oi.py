@@ -2,7 +2,7 @@ import math
 from wpilib.joystick import Joystick
 from wpilib.buttons.joystickbutton import JoystickButton
 
-from commands.resetyawangle import ResetYawAngle
+from commands.navxresetyawangle import NavxResetYawAngle
 
 
 class T16000M(Joystick):
@@ -17,21 +17,36 @@ class T16000M(Joystick):
         self.setAxisChannel(Joystick.AxisType.kTwist, 2)
 
 
+# ----------------------------------------------------------
+# Sticks and Buttons
+# ----------------------------------------------------------
+
 leftDriverStick = None
 rightDriverStick = None
-
+goGamePad = None
 resetYawBtn = None
+
 
 class ConfigHolder:
     pass
+
 
 config = ConfigHolder()
 config.leftDriverStickNullZone = 0.05
 config.rightDriverStickNullZone = 0.05
 
+config.goGamePadNullZone = 0.05
+config.goGamePadStickFilterFactor = 0.2     # for the FilterInput function
+config.goGamePadStickScale = 1.5            # for the FilterInput function
+
 # button indexes
 config.btnResetYawAngleIndex = 2
 
+
+
+# ----------------------------------------------------------
+# Init
+# ----------------------------------------------------------
 
 def init():
     """
@@ -41,14 +56,39 @@ def init():
 
     global leftDriverStick
     global rightDriverStick
+    global goGamePad
 
-    leftDriverStick = T16000M(0)
-    rightDriverStick = T16000M(1)
+    try:
+        leftDriverStick = T16000M(0)
+    except:
+        print('OI: Error - Could not instantiate Left Driver Stick on USB port 0!!!')
+
+    try:
+        rightDriverStick = T16000M(1)
+    except:
+        print('OI: Error - Could not instantiate Right Driver Stick on USB port 0!!!')
+
+    try:
+        goGamePad = Joystick(2)
+
+    except:
+        print('OI: Error - Could not instantiate Game Objective GamePad on USB port 2!!!')
+
+    global resetYawBtn
     resetYawBtn = JoystickButton(rightDriverStick, config.btnResetYawAngleIndex)
-    resetYawBtn.whenPressed(ResetYawAngle())
+    resetYawBtn.whenPressed(NavxResetYawAngle())
 
 
-def filterInput(val, deadZone, filterFactor, scale):
+# ----------------------------------------------------------
+# Utility Functions
+# ----------------------------------------------------------
+
+# View output: https://www.desmos.com/calculator/uh8th7djep
+# to keep a straight line, scale = 0, and filterFactor = 1
+# Keep filterFactor between 0 and 1
+# Scale can go from 0 up, but values over 3-4 have dubious value
+# Nice curve for game pad is filterFactor = 0.2, scale=1.5
+def filterInput(val, deadZone=0.0, filterFactor=1.0, scale=0.0):
     """
     Filter an input using a curve that makes the stick less sensitive at low input values
     Take into account any dead zone required for values very close to 0.0
@@ -66,7 +106,7 @@ def filterInput(val, deadZone, filterFactor, scale):
     else:
         val = val * ((val - deadZone) / (1 - deadZone))
 
-    output = (filterFactor * (val**scale)) + ((1 - filterFactor) * val)
+    output = val * ((filterFactor * (val**scale)) + ((1 - filterFactor) * val))
     output *= sign
     return output
 

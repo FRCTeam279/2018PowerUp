@@ -31,11 +31,17 @@ class MyRobot(CommandBasedRobot):
         subsystems.init()
         oi.init()
 
-
     def teleopPeriodic(self):
         Scheduler.getInstance().run()
         SmartDashboard.putNumber("DL Enc Left", subsystems.driveline.leftEncoder.get())
         SmartDashboard.putNumber("DL Enc Right", subsystems.driveline.rightEncoder.get())
+
+        SmartDashboard.putNumber("EL S1 Top", subsystems.elevator.s1TopLimit())
+        SmartDashboard.putNumber("EL S1 Bottom", subsystems.elevator.s1BottomLimit())
+
+        SmartDashboard.putNumber("EL S2 Top", subsystems.elevator.s2TopLimit())
+        SmartDashboard.putNumber("EL S2 Bottom", subsystems.elevator.s2BottomLimit())
+
 
     def testPeriodic(self):
         wpilib.LiveWindow.run()

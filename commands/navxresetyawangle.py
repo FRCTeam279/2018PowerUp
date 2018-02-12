@@ -5,7 +5,7 @@ from robotpy_ext.common_drivers import navx
 import robotmap
 
 
-class ResetYawAngle(Command):
+class NavxResetYawAngle(Command):
     """
     This command resets the Yaw angle for the NavX Gyro
     """
