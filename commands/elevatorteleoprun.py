@@ -15,7 +15,7 @@ class ElevatorTeleopRun(Command):
     def execute(self):
         speed = -(oi.goGamePad.getRawAxis(1))
         speed = oi.filterInput(speed, deadZone=oi.config.goGamePadNullZone,
-                                filterFactor=oi.config.goGamePadStickFilterFactor,
+                               filterFactor=oi.config.goGamePadStickFilterFactor,
                                scale=oi.config.goGamePadStickScale)
         # TODO - Switch to move once limit switches are in place
         # subsystems.elevator.move(speed, speed)

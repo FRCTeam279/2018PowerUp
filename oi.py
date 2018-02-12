@@ -10,11 +10,17 @@ class T16000M(Joystick):
     def __init__(self, port):
         super().__init__(port)
         self.port = port
-        self.setAxisChannel(Joystick.AxisType.kX, 0)
-        self.setAxisChannel(Joystick.AxisType.kY, 1)
-        self.setAxisChannel(Joystick.AxisType.kZ, 2)
-        self.setAxisChannel(Joystick.AxisType.kThrottle, 3)
-        self.setAxisChannel(Joystick.AxisType.kTwist, 2)
+        # self.setAxisChannel(Joystick.AxisType.kX, 0)
+        # self.setAxisChannel(Joystick.AxisType.kY, 1)
+        # self.setAxisChannel(Joystick.AxisType.kZ, 2)
+        # self.setAxisChannel(Joystick.AxisType.kThrottle, 3)
+        # self.setAxisChannel(Joystick.AxisType.kTwist, 2)
+
+        self.setXChannel(0)
+        self.setYChannel(1)
+        self.setZChannel(2)
+        self.setThrottleChannel(3)
+        self.setTwistChannel(2)
 
 
 # ----------------------------------------------------------
