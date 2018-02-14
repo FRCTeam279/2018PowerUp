@@ -1,6 +1,8 @@
 import wpilib
 from wpilib.command import Command
 import subsystems
+from wpilib import SmartDashboard
+
 
 class PrintUltrasonicRange(Command):
     """
@@ -17,10 +19,10 @@ class PrintUltrasonicRange(Command):
         subsystems.ultrasonics.enable()
 
     def execute(self):
-        Ultrasonics.getFrontDistance()
+        SmartDashboard.putNumber("Ultrasonic Distance", subsystems.ultrasonics.getFrontDistance())
 
     def interrupted(self):
-        Ultrasonics.disable()
+        subsystems.ultrasonics.disable()
 
     def end(self):
-        Ultrasonics.disable()
+        subsystems.ultrasonics.disable()

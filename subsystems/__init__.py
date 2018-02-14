@@ -15,7 +15,7 @@ from .tankdrive import TankDrive
 driveline = None
 elevator = None
 harvester = None
-#ultrasonics = None
+ultrasonics = None
 climber = None
 
 def init():

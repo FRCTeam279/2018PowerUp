@@ -3,6 +3,7 @@ from wpilib.ultrasonic import Ultrasonic
 from wpilib.command.subsystem import Subsystem
 import subsystems
 import robotmap
+from commands.printultrasonicrange import PrintUltrasonicRange
 
 
 class Ultrasonics(Subsystem):
@@ -15,6 +16,7 @@ class Ultrasonics(Subsystem):
         self.frontLeft = Ultrasonic(robotmap.ultrasonics.frontLeftPingPort, robotmap.ultrasonics.frontLeftEchoPort)
         self.frontRight = Ultrasonic(robotmap.ultrasonics.frontLeftPingPort, robotmap.ultrasonics.frontLeftEchoPort)
         self.enabled = False
+        self.setDefaultCommand(PrintUltrasonicRange())
 
     def enable(self):
         self.enabled = True
