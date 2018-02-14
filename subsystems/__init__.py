@@ -27,7 +27,7 @@ def init():
     global driveline
     global elevator
     global harvester
-    #global ultrasonics
+    global ultrasonics
     global climber
 
     '''
@@ -40,6 +40,6 @@ def init():
     driveline = TankDrive()
     elevator = Elevator()
     harvester = Harvester()
-    #ultrasonics = Ultrasonics()
+    ultrasonics = Ultrasonics()
     climber = Climber()
 

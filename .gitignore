@@ -105,3 +105,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+.idea/
+.idea/2018Powerup.iml
+.idea/misc.xml
+.idea/workspace.xml
