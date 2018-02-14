@@ -124,11 +124,10 @@ climber.spdControllerPort = 2       # PWM
 # Ultrasonics
 # ----------------------------------------------------------
 ultrasonics = ConfigHolder()
-# NOTE: Update these ports with the correct ports!
-#ultrasonics.frontRightPingPort = 99
-#ultrasonics.frontRightEchoPort = 99
-#ultrasonics.frontLeftPingPort = 99
-#ultrasonics.frontLeftEchoPort = 99
+ultrasonics.frontRightPingPort = 10
+ultrasonics.frontRightEchoPort = 11
+ultrasonics.frontLeftPingPort = 12
+ultrasonics.frontLeftEchoPort = 13
 
 
 
