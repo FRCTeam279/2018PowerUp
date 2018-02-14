@@ -12,10 +12,10 @@ We will create the code in three phases
 1. Simplistic approach that allows driving up and down until the limit switches at each extent are reached
     - all height maintenance must be performed solely by the driver
 
-2. Improved version that has a "holding speed" specified to addjust the speed up and down to keep the harvester more
+2. Improved version that has a "holding speed" specified to adjust the speed up and down to keep the harvester more
 stable with less effort
 
-3. Final version using PID loop
+3. Using PID loop
 PID loop will be displacement based using the analog signal that will indicate the overall height of the harvester
     - the driver will use the controller to adjust the setpoint rather than the speed directly
 
