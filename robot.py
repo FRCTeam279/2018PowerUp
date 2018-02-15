@@ -42,6 +42,10 @@ class MyRobot(CommandBasedRobot):
         SmartDashboard.putNumber("EL S2 Top", subsystems.elevator.s2TopLimit())
         SmartDashboard.putNumber("EL S2 Bottom", subsystems.elevator.s2BottomLimit())
 
+        SmartDashboard.putNumber("EL Height V", subsystems.elevator.getHeightVoltage())
+        SmartDashboard.putNumber("EL Height Inches", subsystems.elevator.getHeightInches())
+
+
 
     def testPeriodic(self):
         wpilib.LiveWindow.run()

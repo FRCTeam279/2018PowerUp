@@ -2,6 +2,10 @@ import math
 from wpilib.joystick import Joystick
 from wpilib.buttons.joystickbutton import JoystickButton
 
+import robotmap
+from commands.elevatorcalibrateheightreading import ElevatorCalibrateHeightReading
+from commands.elevatormovetobottom import ElevatorMoveToBottom
+from commands.elevatormovetotop import ElevatorMoveToTop
 from commands.navxresetyawangle import NavxResetYawAngle
 
 
@@ -10,11 +14,6 @@ class T16000M(Joystick):
     def __init__(self, port):
         super().__init__(port)
         self.port = port
-        # self.setAxisChannel(Joystick.AxisType.kX, 0)
-        # self.setAxisChannel(Joystick.AxisType.kY, 1)
-        # self.setAxisChannel(Joystick.AxisType.kZ, 2)
-        # self.setAxisChannel(Joystick.AxisType.kThrottle, 3)
-        # self.setAxisChannel(Joystick.AxisType.kTwist, 2)
 
         self.setXChannel(0)
         self.setYChannel(1)
@@ -24,7 +23,42 @@ class T16000M(Joystick):
 
 
 # ----------------------------------------------------------
-# Sticks and Buttons
+# Config Values
+# ----------------------------------------------------------
+
+class ConfigHolder:
+    pass
+
+
+config = ConfigHolder()
+
+# Driver Sticks
+config.leftDriverStickNullZone = 0.05
+config.rightDriverStickNullZone = 0.05
+
+# Left Joystick
+#  unused...
+
+# Right Joystick
+config.btnResetYawAngleIndex = 2
+
+
+# GO Gamepad (Logitech)
+config.goGamePadNullZone = 0.02
+config.goGamePadStickFilterFactor = 0.2     # for the FilterInput function
+config.goGamePadStickScale = 1.5            # for the FilterInput function
+
+
+config.axisElevator = 1
+config.btnElevatorMoveToBottomIndex = 5         # 5 = left bumper
+config.btnElevatorMoveToTopIndex = 6            # 6 = right bumper
+config.btnElevatorCalibrateHeightIndex = 8      # 8 = start
+config.btnCrateLoadIndex = 1                    # 1 = A
+config.btnCrateEjectIndex = 4                   # 4 = Y
+
+
+# ----------------------------------------------------------
+# Stick and Button Objects
 # ----------------------------------------------------------
 
 leftDriverStick = None
@@ -32,22 +66,12 @@ rightDriverStick = None
 goGamePad = None
 resetYawBtn = None
 
+btnCrateLoad = None
+btnCrateEject = None
 
-class ConfigHolder:
-    pass
-
-
-config = ConfigHolder()
-config.leftDriverStickNullZone = 0.05
-config.rightDriverStickNullZone = 0.05
-
-config.goGamePadNullZone = 0.05
-config.goGamePadStickFilterFactor = 0.2     # for the FilterInput function
-config.goGamePadStickScale = 1.5            # for the FilterInput function
-
-# button indexes
-config.btnResetYawAngleIndex = 2
-
+btnElevatorCalibrateHeight = None
+btnElevatorMoveToTop = None
+btnElevatorMoveToBottom = None
 
 
 # ----------------------------------------------------------
@@ -73,16 +97,39 @@ def init():
         rightDriverStick = T16000M(1)
     except:
         print('OI: Error - Could not instantiate Right Driver Stick on USB port 0!!!')
-
     try:
         goGamePad = Joystick(2)
 
     except:
         print('OI: Error - Could not instantiate Game Objective GamePad on USB port 2!!!')
 
+    # ----------------------------------------------------------
+    # Driver Controls
+    # ----------------------------------------------------------
     global resetYawBtn
     resetYawBtn = JoystickButton(rightDriverStick, config.btnResetYawAngleIndex)
     resetYawBtn.whenPressed(NavxResetYawAngle())
+
+    # ----------------------------------------------------------
+    # GO Controls
+    # ----------------------------------------------------------
+    global btnCrateLoad
+    global btnCrateEject
+    btnCrateLoad = JoystickButton(goGamePad, config.btnCrateLoadIndex)
+    btnCrateEject = JoystickButton(goGamePad, config.btnCrateEjectIndex)
+
+    if robotmap.devMode:
+        global btnElevatorCalibrateHeight
+        btnElevatorCalibrateHeight = JoystickButton(goGamePad, config.btnElevatorCalibrateHeightIndex)
+        btnElevatorCalibrateHeight.whenPressed(ElevatorCalibrateHeightReading())
+
+        global btnElevatorMoveToBottom
+        btnElevatorMoveToBottom = JoystickButton(goGamePad, config.btnElevatorMoveToBottomIndex)
+        btnElevatorMoveToBottom.whenPressed(ElevatorMoveToBottom())
+
+        global btnElevatorMoveToTop
+        btnElevatorMoveToTop = JoystickButton(goGamePad, config.btnElevatorMoveToTopIndex)
+        btnElevatorMoveToTop.whenPressed(ElevatorMoveToTop())
 
 
 # ----------------------------------------------------------

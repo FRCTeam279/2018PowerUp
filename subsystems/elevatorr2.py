@@ -24,6 +24,8 @@ class ElevatorR2(Subsystem):
         self._s2BottomLimit = wpilib.DigitalInput(robotmap.elevator.s2BottomLimitPort)
         self._s2SpdController = wpilib.VictorSP(robotmap.elevator.s2SpdControllerPort)
 
+        self._heightPot = wpilib.AnalogInput(robotmap.elevator.heightPotPort)
+
     def initDefaultCommand(self):
         self.setDefaultCommand(ElevatorTeleopRun())
 
@@ -36,13 +38,14 @@ class ElevatorR2(Subsystem):
         self._s1SpdController.set(0.0)
         self._s2SpdController.set(0.0)
 
-    def getHeight(self):
-        # return self._heightPot.get() * robotmap.elevator.heightVoltsPerInch
-        pass
+    def getHeightInches(self):
+        return self._heightPot.getAverageVoltage() * robotmap.elevator.heightVoltsPerInch
 
-    # avoid using this
+    def getHeightVoltage(self):
+        return self._heightPot.getAverageVoltage()
+
+    # avoid using this - seriously
     def rawMove(self, speed):
-        # TODO - update to only move S1 if S2 is at top
         self._s1SpdController.set(speed)
         self._s2SpdController.set(speed)
 
@@ -65,7 +68,6 @@ class ElevatorR2(Subsystem):
     # Adjust the holding speeds in the robotmap
 
     def move(self, s1Speed, s2Speed):
-        # TODO - update to only move S1 if S2 is at top
         if s1Speed == 0.0:
             s1Speed = robotmap.elevator.s1HoldingSpeed
 
@@ -82,7 +84,7 @@ class ElevatorR2(Subsystem):
             self.s1MoveDown(speed)
 
     def s2Move(self, speed):
-        if speed > 0.0:
+        if speed >= 0.0:
             self.s2MoveUp(speed)
         else:
             self.s2MoveDown(speed)
@@ -98,10 +100,12 @@ class ElevatorR2(Subsystem):
         # If S1 happens to be in the middle (which should not be the case, but could happen...), use a holding speed
         if not self.s2TopLimit():
             if self.s1BottomLimit():
+                self._s1SpdController.set(0.0)
                 return
             else:
                 self._s1SpdController.set(robotmap.elevator.s1HoldingSpeed)
                 return
+
         if not self.s1TopLimit():
             speed = math.fabs(speed)
             speed = robotmap.elevator.s1HoldingSpeed + (robotmap.elevator.s1ScaleSpeedUp * speed)
@@ -113,7 +117,7 @@ class ElevatorR2(Subsystem):
         if not self.s1BottomLimit():
             speed = math.fabs(speed)
             speed = robotmap.elevator.s1HoldingSpeed - (robotmap.elevator.s1ScaleSpeedDown * speed)
-            self._s1SpdController.set(-speed)
+            self._s1SpdController.set(speed)
         else:
             self._s1SpdController.set(0.0)
 
@@ -149,13 +153,13 @@ class ElevatorR2(Subsystem):
                 self._s2SpdController.set(0.0)
                 return
             else:
-                self._s1SpdController.set(robotmap.elevator.s1HoldingSpeed)
+                self._s2SpdController.set(robotmap.elevator.s2HoldingSpeed)
                 return
 
         if not self.s2BottomLimit():
             speed = math.fabs(speed)
             speed = robotmap.elevator.s2HoldingSpeed - (robotmap.elevator.s2ScaleSpeedDown * speed)
-            self._s2SpdController.set(-speed)
+            self._s2SpdController.set(speed)
         else:
             self._s2SpdController.set(0.0)
 

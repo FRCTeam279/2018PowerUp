@@ -8,6 +8,7 @@ from wpilib.robotbase import RobotBase
 
 from subsystems.climber import Climber
 from subsystems.elevator import Elevator
+from subsystems.elevatorr2 import ElevatorR2
 from subsystems.harvester import Harvester
 from subsystems.ultrasonics import Ultrasonics
 from .tankdrive import TankDrive
@@ -38,7 +39,7 @@ def init():
         raise RuntimeError('Subsystems have already been initialized')
 
     driveline = TankDrive()
-    elevator = Elevator()
+    elevator = ElevatorR2()
     harvester = Harvester()
     #ultrasonics = Ultrasonics()
     climber = Climber()

@@ -13,7 +13,7 @@ class Elevator(Subsystem):
         print('Elevator: init called')
         super().__init__('Elevator')
         self.debug = False
-
+        self.logCounter = 0
         # self._heightPot = wpilib.AnalogInput(robotmap.elevator.heightPotPort)
 
         self._s1TopLimit = wpilib.DigitalInput(robotmap.elevator.s1TopLimitPort)
@@ -23,6 +23,8 @@ class Elevator(Subsystem):
         self._s2TopLimit = wpilib.DigitalInput(robotmap.elevator.s2TopLimitPort)
         self._s2BottomLimit = wpilib.DigitalInput(robotmap.elevator.s2BottomLimitPort)
         self._s2SpdController = wpilib.VictorSP(robotmap.elevator.s2SpdControllerPort)
+
+        self._heightPot = wpilib.AnalogInput(robotmap.elevator.heightPotPort)
 
     def initDefaultCommand(self):
         self.setDefaultCommand(ElevatorTeleopRun())
@@ -35,9 +37,11 @@ class Elevator(Subsystem):
         self._s1SpdController.set(0.0)
         self._s2SpdController.set(0.0)
 
-    def getHeight(self):
-        # return self._heightPot.get() * robotmap.elevator.heightVoltsPerInch
-        pass
+    def getHeightInches(self):
+        return self._heightPot.getAverageVoltage() * robotmap.elevator.heightVoltsPerInch
+
+    def getHeightVoltage(self):
+        return self._heightPot.getAverageVoltage()
 
     def rawMove(self, speed):
         self._s1SpdController.set(speed)
@@ -85,20 +89,32 @@ class Elevator(Subsystem):
 
         # now for the actual movement since we know the harvester must be at the top if we reached this point
         if not self.s1TopLimit():
+            self.logCounter += 1
             speed = math.fabs(speed)
             speed = robotmap.elevator.s1ScaleSpeedUp * speed
             self._s1SpdController.set(speed)
+            if self.logCounter > 25:
+                print("s1MoveUp: s1TopLimit not set, speed = {}".format(speed))
         else:
             # If we are already at the top.. just hold
             self._s1SpdController.set(robotmap.elevator.s1HoldingSpeed)
 
+        if self.logCounter > 25:
+            self.logCounter = 0
+
     def s1MoveDown(self, speed):
+        self.logCounter += 1
         if not self.s1BottomLimit():
             speed = math.fabs(speed)
-            speed = robotmap.elevator.s1ScaleSpeedDown * speed
-            self._s1SpdController.set(-speed)
+            speed = robotmap.elevator.s1ScaleSpeedDown * speed * -1.0
+            self._s1SpdController.set(speed)
+            if self.logCounter > 25:
+                print("s1MoveDOwn: BottomLimit not set, speed = {}".format(speed))
         else:
             self._s1SpdController.set(0.0)
+
+        if self.logCounter > 25:
+            self.logCounter = 0
 
     def s1TopLimit(self):
         if robotmap.elevator.s1TopLimitNormalClosed:
@@ -132,14 +148,14 @@ class Elevator(Subsystem):
                 self._s2SpdController.set(0.0)
                 return
             else:
-                self._s1SpdController.set(robotmap.elevator.s1HoldingSpeed)
+                self._s2SpdController.set(robotmap.elevator.s2HoldingSpeed)
                 return
 
         # and now the planned movement - S1 must already have been driven the middle assembly all the way down
         if not self.s2BottomLimit():
             speed = math.fabs(speed)
-            speed = robotmap.elevator.s2ScaleSpeedDown * speed
-            self._s2SpdController.set(-speed)
+            speed = robotmap.elevator.s2ScaleSpeedDown * speed * -1.0
+            self._s2SpdController.set(speed)
         else:
             self._s2SpdController.set(0.0)
 
@@ -154,5 +170,6 @@ class Elevator(Subsystem):
             return not self._s2BottomLimit.get()
         else:
             return self._s2BottomLimit.get()
+
 
 

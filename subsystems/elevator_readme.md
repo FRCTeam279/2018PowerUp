@@ -39,3 +39,8 @@ Example:
 
  Conversely, if the S2 is not all the way down within S1, and a down movement is given, S1 should be driven to move S2
  down before starting to move the harvester down
+
+
+
+Update:
+The #2 method, just using a holding speed works fine.  No PID loop required, yay!
