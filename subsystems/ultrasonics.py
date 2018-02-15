@@ -14,9 +14,11 @@ class Ultrasonics(Subsystem):
         self.debug = False
         self.logPrefix = "Ultrasonics: "
         self.frontLeft = Ultrasonic(robotmap.ultrasonics.frontLeftPingPort, robotmap.ultrasonics.frontLeftEchoPort)
-        self.frontRight = Ultrasonic(robotmap.ultrasonics.frontLeftPingPort, robotmap.ultrasonics.frontLeftEchoPort)
+        self.frontRight = Ultrasonic(robotmap.ultrasonics.frontRightPingPort, robotmap.ultrasonics.frontRightEchoPort)
         self.enabled = False
-        self.setDefaultCommand(PrintUltrasonicRange())
+
+    def initDefaultCommand(self):
+        print(self.logPrefix + "setting default command to PrintUltrasonicRange()")
 
     def enable(self):
         self.enabled = True
@@ -34,12 +36,10 @@ class Ultrasonics(Subsystem):
             frontLeft = self.frontLeft.getRangeInches()
         else:
             frontLeft = 0
-            print(self.logPrefix + "frontLeft range invalid!")
 
         if self.frontRight.isRangeValid():
             frontRight = self.frontRight.getRangeInches()
         else:
             frontRight = 0
-            print(self.logPrefix + "frontRight range invalid!")
 
         return (frontRight + frontLeft) / 2
