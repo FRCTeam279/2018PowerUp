@@ -79,8 +79,8 @@ sensors.hasAHRS = True
 ultrasonics = ConfigHolder()
 ultrasonics.frontRightPingPort = 10     # DIO
 ultrasonics.frontRightEchoPort = 11
-# ultrasonics.frontLeftPingPort = 12
-# ultrasonics.frontLeftEchoPort = 13
+ultrasonics.frontLeftPingPort = 12
+ultrasonics.frontLeftEchoPort = 13
 
 
 # ----------------------------------------------------------
@@ -139,6 +139,5 @@ harvester.relayPort = 0             # relay port
 # ----------------------------------------------------------
 climber = ConfigHolder()
 climber.spdControllerPort = 2       # PWM
-
 
 print("RobotMap module completed load")

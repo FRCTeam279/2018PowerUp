@@ -16,7 +16,7 @@ from .tankdrive import TankDrive
 driveline = None
 elevator = None
 harvester = None
-#ultrasonics = None
+ultrasonics = None
 climber = None
 
 def init():
@@ -28,7 +28,7 @@ def init():
     global driveline
     global elevator
     global harvester
-    #global ultrasonics
+    global ultrasonics
     global climber
 
     '''
@@ -41,6 +41,6 @@ def init():
     driveline = TankDrive()
     elevator = ElevatorR2()
     harvester = Harvester()
-    #ultrasonics = Ultrasonics()
+    ultrasonics = Ultrasonics()
     climber = Climber()
 
