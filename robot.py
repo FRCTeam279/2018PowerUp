@@ -10,6 +10,7 @@ from robotpy_ext.common_drivers import navx
 import robotmap
 import subsystems
 import oi
+from automanager import AutoManager
 
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
 
@@ -28,6 +29,7 @@ class MyRobot(CommandBasedRobot):
                     raise
 
         # subsystems must be initialized before things that use them
+        AutoManager().initialize()
         subsystems.init()
         oi.init()
 
