@@ -1,14 +1,12 @@
 import wpilib
-from wpilib.ultrasonic import Ultrasonic
 from wpilib.command.subsystem import Subsystem
-import subsystems
-import robotmap
+from wpilib import Relay
 
 
 class Harvester(Subsystem):
 
     def __init__(self):
-        print('Harvester: init called')
         super().__init__('Harvester')
-        self.debug = False
-        self.logPrefix = "Harvester: "
+        print("Harvester Called")
+        self.logPrefix = "Harvester"
+        self.cubegrabinator3000 = Relay(0, Relay.Direction.kBoth)
