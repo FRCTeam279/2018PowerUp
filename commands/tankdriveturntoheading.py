@@ -8,7 +8,7 @@ import robotmap
 import subsystems
 
 
-class TurnToHeading(Command):
+class TankDriveTurnToHeading(Command):
     """
     This command implements a PID loop to turn the robot to a heading
 
@@ -21,7 +21,7 @@ class TurnToHeading(Command):
     wheel which is equivilent to the intended output vs no scaling which effectively doubles the turn speed)
     """
     def __init__(self, target=0.0, p=0.0, i=0.0, d=0.0, tolerance=0.0, minSpeed=0.0, numSamples=4, steadyRate=2.0, scaleSpeed=0.5, useDashboardValues=False):
-        super().__init__('TurnToHeading')
+        super().__init__('TankDriveTurnToHeading')
         self.requires(subsystems.driveline)
         self.setInterruptible(True)
         self.setRunWhenDisabled(False)
@@ -67,7 +67,7 @@ class TurnToHeading(Command):
         self.turnRateSamples = [self.steadyRate] * self.numSamples  # biasing to neutral to begin
 
 
-        print("CMD TurnToHeading Starting({}) - target: {}, current: {}, P: {}, I: {}, D: {}, tolerance: {}, steadyRate: {}, scaleSpeed: {}".format(
+        print("CMD TankDriveTurnToHeading Starting({}) - target: {}, current: {}, P: {}, I: {}, D: {}, tolerance: {}, steadyRate: {}, scaleSpeed: {}".format(
             int(round(time.time() * 1000)), self.target, robotmap.sensors.ahrs.getYaw(),
             self.kP, self.kI, self.kD, self.tolerance, self.steadyRate, self.scaleSpeed))
 
@@ -92,10 +92,10 @@ class TurnToHeading(Command):
         if self.logCounter > 25:
             self.logCounter = 0
             if self.numSamples > 0:
-                print("CMD TurnToHeading isFinished - target: {}, current: {}, tolerance: {}, avgRate: {}, steadyRate: {}".format(
+                print("CMD TankDriveTurnToHeading isFinished - target: {}, current: {}, tolerance: {}, avgRate: {}, steadyRate: {}".format(
                     self.target, robotmap.sensors.ahrs.getYaw(), self.tolerance, avgRate, self.steadyRate))
             else:
-                print("CMD TurnToHeading isFinished - target: {}, current: {}, tolerance: {}".format(
+                print("CMD TankDriveTurnToHeading isFinished - target: {}, current: {}, tolerance: {}".format(
                         self.target, robotmap.sensors.ahrs.getYaw(), self.tolerance))
 
         if self.numSamples > 0:
@@ -112,13 +112,13 @@ class TurnToHeading(Command):
         return False
 
     def end(self):
-        print("CMD TurnToHeading Ended({}) - target: {}, current: {}".format(
+        print("CMD TankDriveTurnToHeading Ended({}) - target: {}, current: {}".format(
             int(round(time.time() * 1000)), self.target, robotmap.sensors.ahrs.getYaw()))
         subsystems.driveline.pidTurnController.reset()
         subsystems.driveline.stop()
 
     def interrupted(self):
-        print("CMD TurnToHeading Interrupted({}) - target: {}, current: {}".format(
+        print("CMD TankDriveTurnToHeading Interrupted({}) - target: {}, current: {}".format(
             int(round(time.time() * 1000)), self.target, robotmap.sensors.ahrs.getYaw()))
         subsystems.driveline.pidTurnController.reset()
         subsystems.driveline.stop()

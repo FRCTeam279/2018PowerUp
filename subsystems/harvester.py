@@ -9,4 +9,4 @@ class Harvester(Subsystem):
         super().__init__('Harvester')
         print("Harvester Called")
         self.logPrefix = "Harvester"
-        self.cubegrabinator3000 = Relay(0, Relay.Direction.kBoth)
+        self.cubeinator3000 = Relay(0, Relay.Direction.kBoth)

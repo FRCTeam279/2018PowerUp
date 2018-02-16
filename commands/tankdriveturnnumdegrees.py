@@ -1,13 +1,13 @@
 from wpilib.command import Command
 
 
-class TurnNumDegrees(Command):
+class TankDriveTurnNumDegrees(Command):
     """
     This command does nothing for X milliseconds
     """
 
     def __init__(self, degDiff):
-        super().__init__('TurnNumDegrees')
+        super().__init__('TankDriveTurnNumDegrees')
         self.requires(subsystems.driveline)
         self.setInterruptible(True)
         self.setRunWhenDisabled(False)

@@ -6,19 +6,19 @@ import subsystems
 from wpilib import Relay
 
 
-class EjectCube(Command):
+class CubeEject(Command):
 
     def __init__(self):
-        super().__init__('GrabCube')
+        super().__init__('CubeEject')
         self.requires(subsystems.harvester)
         self.setInterruptible(True)
         self.setRunWhenDisabled(False)
 
     def execute(self):
-        subsystems.harvester.cubegraberinator3000.set(Relay.Value.kReverse)
+        subsystems.harvester.cubeinator3000.set(Relay.Value.kReverse)
 
     def isFinished(self):
         return False
 
     def interrupted(self):
-        subsystems.harvester.cubegrabinator3000.set(Relay.Value.kOff)
+        subsystems.harvester.cubeinator3000.set(Relay.Value.kOff)

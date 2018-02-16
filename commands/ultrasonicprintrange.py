@@ -4,13 +4,13 @@ import subsystems
 from wpilib import SmartDashboard
 
 
-class PrintUltrasonicRange(Command):
+class UltrasonicPrintRange(Command):
     """
     This command prints the ultrasonic range to the smartdashboard
     """
 
     def __init__(self):
-        super().__init__('PrintUltrasonicRange')
+        super().__init__('UltrasonicPrintRange')
         self.setInterruptible(True)
         self.setRunWhenDisabled(True)
         self.requires(subsystems.ultrasonics)

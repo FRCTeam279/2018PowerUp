@@ -3,7 +3,7 @@ from wpilib.command import CommandGroup
 import robotmap
 from commands.delay import Delay
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
-from commands.turntoheading import TurnToHeading
+from commands.tankdriveturntoheading import TankDriveTurnToHeading
 
 
 class AutoLoadSwitchToLeft(CommandGroup):
@@ -20,7 +20,7 @@ class AutoLoadSwitchToLeft(CommandGroup):
 
         # target=0.0, p=0.0, i=0.0, d=0.0, tolerance=0.0, minSpeed=0.0, numSamples=4, steadyRate=2.0,
         # scaleSpeed=0.5, useDashboardValues=False
-        self.addSequential(TurnToHeading(target=-90.0, p=0.0035, i=0.0000, d=0.0000, minSpeed=0.15, tolerance=3,
+        self.addSequential(TankDriveTurnToHeading(target=-90.0, p=0.0035, i=0.0000, d=0.0000, minSpeed=0.15, tolerance=3,
                                          numSamples=10, steadyRate=0.5, scaleSpeed=1.0))
 
 

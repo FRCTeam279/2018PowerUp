@@ -3,20 +3,18 @@ from wpilib.joystick import Joystick
 from wpilib.buttons.joystickbutton import JoystickButton
 
 import robotmap
-from commands.ejectcube import EjectCube
+from commands.cubeeject import CubeEject
+from commands.cubegrab import CubeGrab
 from commands.elevatorcalibrateheightreading import ElevatorCalibrateHeightReading
 from commands.elevatormovetobottom import ElevatorMoveToBottom
 from commands.elevatormovetotop import ElevatorMoveToTop
-from commands.grabcube import GrabCube
 from commands.navxresetyawangle import NavxResetYawAngle
 
 
 class T16000M(Joystick):
-
     def __init__(self, port):
         super().__init__(port)
         self.port = port
-
         self.setXChannel(0)
         self.setYChannel(1)
         self.setZChannel(2)
@@ -43,8 +41,7 @@ config.rightDriverStickNullZone = 0.05
 
 # Right Joystick
 config.btnResetYawAngleIndex = 2
-tempgrabcube = None
-tempejectcube = None
+
 
 # GO Gamepad (Logitech)
 config.goGamePadNullZone = 0.02
@@ -90,8 +87,6 @@ def init():
     global leftDriverStick
     global rightDriverStick
     global goGamePad
-    global tempgrabcube
-    global tempejectcube
 
     try:
         leftDriverStick = T16000M(0)
@@ -114,10 +109,7 @@ def init():
     global resetYawBtn
     resetYawBtn = JoystickButton(rightDriverStick, config.btnResetYawAngleIndex)
     resetYawBtn.whenPressed(NavxResetYawAngle())
-    tempgrabcube = JoystickButton(rightDriverStick, 3)
-    tempgrabcube.whileHeld(GrabCube())
-    tempejectcube = JoystickButton(rightDriverStick, 4)
-    tempejectcube.whileHeld(EjectCube())
+
 
     # ----------------------------------------------------------
     # GO Controls
@@ -126,6 +118,9 @@ def init():
     global btnCrateEject
     btnCrateLoad = JoystickButton(goGamePad, config.btnCrateLoadIndex)
     btnCrateEject = JoystickButton(goGamePad, config.btnCrateEjectIndex)
+    btnCrateLoad.whileHeld(CubeGrab())
+    btnCrateEject.whileHeld(CubeEject())
+
 
     if robotmap.devMode:
         global btnElevatorCalibrateHeight

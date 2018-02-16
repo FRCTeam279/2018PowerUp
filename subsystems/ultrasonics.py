@@ -3,7 +3,7 @@ from wpilib.ultrasonic import Ultrasonic
 from wpilib.command.subsystem import Subsystem
 import subsystems
 import robotmap
-from commands.printultrasonicrange import PrintUltrasonicRange
+from commands.ultrasonicprintrange import UltrasonicPrintRange
 
 
 class Ultrasonics(Subsystem):
