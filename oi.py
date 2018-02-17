@@ -103,9 +103,9 @@ def init():
         rightDriverStick = T16000M(1)
     except:
         print('OI: Error - Could not instantiate Right Driver Stick on USB port 0!!!')
+
     try:
         goGamePad = Joystick(2)
-
     except:
         print('OI: Error - Could not instantiate Game Objective GamePad on USB port 2!!!')
 

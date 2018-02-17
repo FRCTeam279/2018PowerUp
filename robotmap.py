@@ -146,5 +146,6 @@ harvester.rotateDownSpeed = 0.2
 # ----------------------------------------------------------
 climber = ConfigHolder()
 climber.spdControllerPort = 2       # PWM
-
+climber.spdControllerReverse = False
 print("RobotMap module completed load")
+

@@ -11,7 +11,7 @@ from subsystems.elevator import Elevator
 from subsystems.elevatorr2 import ElevatorR2
 from subsystems.harvester import Harvester
 from subsystems.ultrasonics import Ultrasonics
-from .tankdrive import TankDrive
+from subsystems.tankdrive import TankDrive
 
 driveline = None
 elevator = None
@@ -28,7 +28,7 @@ def init():
     global driveline
     global elevator
     global harvester
-    #global ultrasonics
+    global ultrasonics
     global climber
 
     '''
@@ -42,5 +42,6 @@ def init():
     elevator = ElevatorR2()
     harvester = Harvester()
     ultrasonics = Ultrasonics()
-    climber = Climber()
+    # climber = Climber()
+
 
