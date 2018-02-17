@@ -13,8 +13,16 @@ class Ultrasonics(Subsystem):
         super().__init__('Ultrasonics')
         self.debug = False
         self.logPrefix = "Ultrasonics: "
-        self.frontLeft = Ultrasonic(robotmap.ultrasonics.frontLeftPingPort, robotmap.ultrasonics.frontLeftEchoPort)
-        self.frontRight = Ultrasonic(robotmap.ultrasonics.frontRightPingPort, robotmap.ultrasonics.frontRightEchoPort)
+        try:
+            self.frontLeft = Ultrasonic(robotmap.ultrasonics.frontLeftPingPort, robotmap.ultrasonics.frontLeftEchoPort)
+        except:
+            print("Ultrasonics: Error!!! Could not create front left ultrasonic!")
+
+        try:
+            self.frontRight = Ultrasonic(robotmap.ultrasonics.frontRightPingPort, robotmap.ultrasonics.frontRightEchoPort)
+        except:
+            print("Ultrasonics: Error!!! Could not create front right ultrasonic!")
+
         self.enabled = False
 
     def initDefaultCommand(self):
@@ -22,24 +30,38 @@ class Ultrasonics(Subsystem):
 
     def enable(self):
         self.enabled = True
-        self.frontLeft.setAutomaticMode(True)
+        if self.frontLeft:
+            self.frontLeft.setAutomaticMode(True)
+        if self.frontRight:
+            self.frontRight.setAutomaticMode(True)          #yes, this is redundant.. unless the left one didn't work
 
     def disable(self):
         self.enabled = False
-        self.frontLeft.setAutomaticMode(False)
+        if self.frontLeft:
+            self.frontLeft.setAutomaticMode(False)
+        if self.frontRight:
+            self.frontRight.setAutomaticMode(False)          #yes, this is redundant.. unless the left one didn't work
 
     def getFrontDistance(self):
-        # if(self.frontLeft.isRangeValid()):
-        #    frontLeft = self.frontLeft.getRangeInches()
+        frontLeft = -1
+        if self.frontLeft:
+            if self.frontLeft.isRangeValid():
+                frontLeft = self.frontLeft.getRangeInches()
+                if frontLeft < 7:  #the cubinator3000 is in the way
+                    frontLeft = -1
 
-        if self.frontLeft.isRangeValid():
-            frontLeft = self.frontLeft.getRangeInches()
+        frontRight = -1
+        if self.frontRight:
+            if self.frontRight.isRangeValid():
+                frontRight = self.frontRight.getRangeInches()
+                if frontRight < 7: #the cubinator3000 is in the way
+                    frontRight = -1
+
+        if frontLeft >= 0 and frontRight >= 0:
+            return (frontRight + frontLeft) / 2
+        elif frontLeft >= 0:
+            return frontLeft
+        elif frontRight >= 0:
+            return frontRight
         else:
-            frontLeft = 0
-
-        if self.frontRight.isRangeValid():
-            frontRight = self.frontRight.getRangeInches()
-        else:
-            frontRight = 0
-
-        return (frontRight + frontLeft) / 2
+            return 0

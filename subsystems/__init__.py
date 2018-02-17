@@ -41,6 +41,6 @@ def init():
     driveline = TankDrive()
     elevator = ElevatorR2()
     harvester = Harvester()
-    #ultrasonics = Ultrasonics()
+    ultrasonics = Ultrasonics()
     climber = Climber()
 

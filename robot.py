@@ -13,6 +13,8 @@ import oi
 
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
 
+# Contains no juice
+
 
 class MyRobot(CommandBasedRobot):
 

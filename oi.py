@@ -5,6 +5,8 @@ from wpilib.buttons.joystickbutton import JoystickButton
 import robotmap
 from commands.cubeeject import CubeEject
 from commands.cubegrab import CubeGrab
+from commands.cuberotatedown import CubeRotateDown
+from commands.cuberotateup import CubeRotateUp
 from commands.elevatorcalibrateheightreading import ElevatorCalibrateHeightReading
 from commands.elevatormovetobottom import ElevatorMoveToBottom
 from commands.elevatormovetotop import ElevatorMoveToTop
@@ -33,8 +35,8 @@ class ConfigHolder:
 config = ConfigHolder()
 
 # Driver Sticks
-config.leftDriverStickNullZone = 0.05
-config.rightDriverStickNullZone = 0.05
+config.leftDriverStickNullZone = 0.1
+config.rightDriverStickNullZone = 0.1
 
 # Left Joystick
 #  unused...
@@ -44,7 +46,7 @@ config.btnResetYawAngleIndex = 2
 
 
 # GO Gamepad (Logitech)
-config.goGamePadNullZone = 0.02
+config.goGamePadNullZone = 0.03
 config.goGamePadStickFilterFactor = 0.2     # for the FilterInput function
 config.goGamePadStickScale = 1.5            # for the FilterInput function
 
@@ -55,6 +57,8 @@ config.btnElevatorMoveToTopIndex = 6            # 6 = right bumper
 config.btnElevatorCalibrateHeightIndex = 8      # 8 = start
 config.btnCrateLoadIndex = 1                    # 1 = A
 config.btnCrateEjectIndex = 4                   # 4 = Y
+config.btnCubeRotateUp = 3                      # 3 = X
+config.btnCubeRotateDown = 2                    # 2 = X
 
 
 # ----------------------------------------------------------
@@ -68,6 +72,8 @@ resetYawBtn = None
 
 btnCrateLoad = None
 btnCrateEject = None
+btnCrateRotateUp = None
+btnCrateRotateDown = None
 
 btnElevatorCalibrateHeight = None
 btnElevatorMoveToTop = None
@@ -110,17 +116,21 @@ def init():
     resetYawBtn = JoystickButton(rightDriverStick, config.btnResetYawAngleIndex)
     resetYawBtn.whenPressed(NavxResetYawAngle())
 
-
     # ----------------------------------------------------------
     # GO Controls
     # ----------------------------------------------------------
     global btnCrateLoad
     global btnCrateEject
+    global btnCrateRotateUp
+    global btnCrateRotateDown
     btnCrateLoad = JoystickButton(goGamePad, config.btnCrateLoadIndex)
     btnCrateEject = JoystickButton(goGamePad, config.btnCrateEjectIndex)
+    btnCrateRotateUp = JoystickButton(goGamePad, config.btnCubeRotateUp)
+    btnCrateRotateDown = JoystickButton(goGamePad, config.btnCubeRotateDown)
     btnCrateLoad.whileHeld(CubeGrab())
     btnCrateEject.whileHeld(CubeEject())
-
+    btnCrateRotateUp.whileHeld(CubeRotateUp())
+    btnCrateRotateDown.whileHeld(CubeRotateDown())
 
     if robotmap.devMode:
         global btnElevatorCalibrateHeight

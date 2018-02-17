@@ -19,10 +19,12 @@ class ElevatorR2(Subsystem):
         self._s1TopLimit = wpilib.DigitalInput(robotmap.elevator.s1TopLimitPort)
         self._s1BottomLimit = wpilib.DigitalInput(robotmap.elevator.s1BottomLimitPort)
         self._s1SpdController = wpilib.VictorSP(robotmap.elevator.s1SpdControllerPort)
+        self._s1SpdController.setInverted(robotmap.elevator.s1SpdControllerReverse)
 
         self._s2TopLimit = wpilib.DigitalInput(robotmap.elevator.s2TopLimitPort)
         self._s2BottomLimit = wpilib.DigitalInput(robotmap.elevator.s2BottomLimitPort)
         self._s2SpdController = wpilib.VictorSP(robotmap.elevator.s2SpdControllerPort)
+        self._s2SpdController.setInverted(robotmap.elevator.s2SpdControllerReverse)
 
         self._heightPot = wpilib.AnalogInput(robotmap.elevator.heightPotPort)
 
