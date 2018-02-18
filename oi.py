@@ -11,6 +11,8 @@ from commands.elevatorcalibrateheightreading import ElevatorCalibrateHeightReadi
 from commands.elevatormovetobottom import ElevatorMoveToBottom
 from commands.elevatormovetotop import ElevatorMoveToTop
 from commands.navxresetyawangle import NavxResetYawAngle
+from commands.tankdrivereseencoders import TankDriveResetEncoders
+from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
 
 
 class T16000M(Joystick):
@@ -38,8 +40,8 @@ config = ConfigHolder()
 config.leftDriverStickNullZone = 0.1
 config.rightDriverStickNullZone = 0.1
 
-# Left Joystick
-#  unused...
+# Left Joystickc
+config.btnResetEncodersIndex = 2
 
 # Right Joystick
 config.btnResetYawAngleIndex = 2
@@ -69,6 +71,7 @@ leftDriverStick = None
 rightDriverStick = None
 goGamePad = None
 resetYawBtn = None
+btnResetEncoders = None
 
 btnCrateLoad = None
 btnCrateEject = None
@@ -78,6 +81,14 @@ btnCrateRotateDown = None
 btnElevatorCalibrateHeight = None
 btnElevatorMoveToTop = None
 btnElevatorMoveToBottom = None
+
+b1 = None
+b2 = None
+b3 = None
+b4 = None
+b5 = None
+b6 = None
+
 
 
 # ----------------------------------------------------------
@@ -116,6 +127,11 @@ def init():
     resetYawBtn = JoystickButton(rightDriverStick, config.btnResetYawAngleIndex)
     resetYawBtn.whenPressed(NavxResetYawAngle())
 
+    global btnResetEncoders
+    btnResetEncoders = JoystickButton(leftDriverStick, config.btnResetEncodersIndex)
+    btnResetEncoders.whenPressed(TankDriveResetEncoders())
+
+
     # ----------------------------------------------------------
     # GO Controls
     # ----------------------------------------------------------
@@ -132,18 +148,40 @@ def init():
     btnCrateRotateUp.whileHeld(CubeRotateUp())
     btnCrateRotateDown.whileHeld(CubeRotateDown())
 
-    if robotmap.devMode:
-        global btnElevatorCalibrateHeight
-        btnElevatorCalibrateHeight = JoystickButton(goGamePad, config.btnElevatorCalibrateHeightIndex)
-        btnElevatorCalibrateHeight.whenPressed(ElevatorCalibrateHeightReading())
+    global b1
+    global b2
+    global b3
+    global b4
+    global b5
+    global b6
 
-        global btnElevatorMoveToBottom
-        btnElevatorMoveToBottom = JoystickButton(goGamePad, config.btnElevatorMoveToBottomIndex)
-        btnElevatorMoveToBottom.whenPressed(ElevatorMoveToBottom())
+    b1 = JoystickButton(leftDriverStick, 5)
+    b2 = JoystickButton(leftDriverStick, 6)
+    b3 = JoystickButton(leftDriverStick, 7)
+    b4 = JoystickButton(leftDriverStick, 8)
+    b5 = JoystickButton(leftDriverStick, 9)
+    b6 = JoystickButton(leftDriverStick, 10)
 
-        global btnElevatorMoveToTop
-        btnElevatorMoveToTop = JoystickButton(goGamePad, config.btnElevatorMoveToTopIndex)
-        btnElevatorMoveToTop.whenPressed(ElevatorMoveToTop())
+    b1.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 24, p=0.0012, d=0.0, i=0.0, tolerance=25, minSpeed=0.15, maxSpeed=1.0))
+    b2.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 36, p=0.0012, d=0.0, i=0.0, tolerance=50, minSpeed=0.15, maxSpeed=1.0))
+    b3.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 48, p=0.0012, d=0.0, i=0.0, tolerance=50, minSpeed=0.15, maxSpeed=1.0))
+    b4.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 56, p=0.0012, d=0.0, i=0.0, tolerance=75, minSpeed=0.15, maxSpeed=1.0))
+    b5.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 100, p=0.0012, d=0.0, i=0.0, tolerance=75, minSpeed=0.15, maxSpeed=1.0))
+    b6.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 150, p=0.0012, d=0.0, i=0.0, tolerance=75, minSpeed=0.15, maxSpeed=1.0))
+
+
+    #if robotmap.devMode:
+    #    global btnElevatorCalibrateHeight
+    #    btnElevatorCalibrateHeight = JoystickButton(goGamePad, config.btnElevatorCalibrateHeightIndex)
+    #    btnElevatorCalibrateHeight.whenPressed(ElevatorCalibrateHeightReading())#
+
+    #   global btnElevatorMoveToBottom
+    #    btnElevatorMoveToBottom = JoystickButton(goGamePad, config.btnElevatorMoveToBottomIndex)
+    #    btnElevatorMoveToBottom.whenPressed(ElevatorMoveToBottom())
+
+    #    global btnElevatorMoveToTop
+    #    btnElevatorMoveToTop = JoystickButton(goGamePad, config.btnElevatorMoveToTopIndex)
+    #    btnElevatorMoveToTop.whenPressed(ElevatorMoveToTop())
 
 
 # ----------------------------------------------------------

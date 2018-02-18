@@ -25,14 +25,16 @@ driveLine.invertLeft = True
 driveLine.invertRight = False
 driveLine.speedControllerType = "TALON"
 
-driveLine.driveWheelRadiusInches = 3.1875
-driveLine.driveWheelEncTicks = 360
-driveLine.inchesPerTick = 2 * math.pi * driveLine.driveWheelRadiusInches / driveLine.driveWheelEncTicks
+#driveLine.driveWheelRadiusInches = 3.1875
+#driveLine.driveWheelEncTicks = 360
+#driveLine.inchesPerTick = 2 * math.pi * driveLine.driveWheelRadiusInches / driveLine.driveWheelEncTicks
+driveLine.inchesPerTick = 0.1536
+driveLine.ticksPerInch = 6.5
 
 driveLine.leftEncAPort = 0
 driveLine.leftEncBPort = 1
 driveLine.leftEncType = wpilib.Encoder.EncodingType.k4X
-driveLine.leftEncReverse = False
+driveLine.leftEncReverse = True
 
 
 driveLine.rightEncAPort = 2

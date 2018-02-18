@@ -1,3 +1,5 @@
+# Contains no juice
+
 import wpilib
 from commandbased import CommandBasedRobot
 from wpilib.command import Scheduler
@@ -6,21 +8,19 @@ from wpilib.driverstation import DriverStation
 from robotpy_ext.common_drivers import navx
 
 
-# import items in the order they should be initialized to avoid any suprises
+# import items in the order they should be initialized to avoid any surprises
 import robotmap
 import subsystems
 import oi
 from automanager import AutoManager
 
-from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
-
-# Contains no juice
+autoManager = None
 
 
 class MyRobot(CommandBasedRobot):
 
     def robotInit(self):
-        print('2018Powerp - robotInit called')
+        print('2018Powerup - robotInit called')
         if robotmap.sensors.hasAHRS:
             try:
                 robotmap.sensors.ahrs = navx.AHRS.create_spi()
@@ -30,10 +30,29 @@ class MyRobot(CommandBasedRobot):
                 if not DriverStation.getInstance().isFmsAttached():
                     raise
 
+        #global autoManager
+        #autoManager = AutoManager()
+        #autoManager.initialize()
+
         # subsystems must be initialized before things that use them
-        AutoManager().initialize()
         subsystems.init()
         oi.init()
+
+    #def autonomousPeriodic(self):
+        #global autoManager
+        #if len(autoManager.gameData) < 3:
+        #    autoManager.gameData = DriverStation.getInstance().getGameSpecificMessage()
+        #    print("Auto Periodic: Game Data = {}".format(autoManager.gameData))
+
+        #    if len(autoManager.gameData) > 0:
+        #        gameDataNearSwitchSide = autoManager.gameData[0]
+        #        gameDataScaleSide = autoManager.gameData[1]
+        #        autoCommandToRun = autoManager.getAction(gameDataNearSwitchSide, gameDataScaleSide)
+        #        autoCommandToRun.start()
+        #        print("Auto Periodic: Started command received from AutoManager")
+        #    else:
+        #        print("Auto Periodic: Error - gameData was zero length!")
+        #super().autonomousPeriodic()
 
     def teleopPeriodic(self):
         Scheduler.getInstance().run()
@@ -48,8 +67,6 @@ class MyRobot(CommandBasedRobot):
 
         SmartDashboard.putNumber("EL Height V", subsystems.elevator.getHeightVoltage())
         SmartDashboard.putNumber("EL Height Inches", subsystems.elevator.getHeightInches())
-
-
 
     def testPeriodic(self):
         wpilib.LiveWindow.run()
