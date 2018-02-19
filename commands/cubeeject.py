@@ -15,7 +15,7 @@ class CubeEject(Command):
         self.setRunWhenDisabled(False)
 
     def execute(self):
-        subsystems.harvester.cubeinator3000.set(Relay.Value.kReverse)
+        subsystems.harvester.cubeinator3000.set(Relay.Value.kForward)
 
     def isFinished(self):
         return False

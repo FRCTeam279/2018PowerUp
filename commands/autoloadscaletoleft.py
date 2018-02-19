@@ -26,8 +26,13 @@ class AutoLoadScaleToLeft(CommandGroup):
 
         # 20' for testing... 20 * 12 = 240
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Drive Forward 240 inches"))
-        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 240, p=0.005, d=0.0,
-                                                      i=0.0, tolerance=75, minSpeed=0.15, maxSpeed=1.0))
+        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 240,
+                                                      p=robotmap.driveLine.pidLargeDriveP,
+                                                      i=robotmap.driveLine.pidLargeDriveI,
+                                                      d=robotmap.driveLine.pidLargeDriveD,
+                                                      tolerance=robotmap.driveLine.pidLargeDriveTolerance,
+                                                      minSpeed=robotmap.driveLine.pidLargeDriveMinSpeed,
+                                                      maxSpeed=robotmap.driveLine.pidLargeDriveMaxSpeed), timeout=5)
 
         # TODO - do we need to rotate in a bit?
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Rotate in"))

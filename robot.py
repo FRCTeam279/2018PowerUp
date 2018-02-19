@@ -21,6 +21,21 @@ class MyRobot(CommandBasedRobot):
 
     def robotInit(self):
         print('2018Powerup - robotInit called')
+
+        if DriverStation.getInstance().isFMSAttached():
+            robotmap.devMode = False
+            print('robotInit: FMS Attached - devMode disabled')
+        else:
+            robotmap.devMode = True
+            print('robotInit: NO FMS Attached - devMode Enabled!')
+
+        print('robotInit: Starting Camera Server')
+        try:
+            wpilib.CameraServer.launch()
+            print('robotInit: Camera Rolling')
+        except Exception as e:
+            print('robotInit: Error! Exception caught starting cameraServer: {}'.format(e))
+
         if robotmap.sensors.hasAHRS:
             try:
                 robotmap.sensors.ahrs = navx.AHRS.create_spi()
@@ -30,32 +45,17 @@ class MyRobot(CommandBasedRobot):
                 if not DriverStation.getInstance().isFmsAttached():
                     raise
 
-        #global autoManager
-        #autoManager = AutoManager()
-        #autoManager.initialize()
+        global autoManager
+        autoManager = AutoManager()
+        autoManager.initialize()
 
         # subsystems must be initialized before things that use them
         subsystems.init()
         oi.init()
 
-    #def autonomousPeriodic(self):
-        #global autoManager
-        #if len(autoManager.gameData) < 3:
-        #    autoManager.gameData = DriverStation.getInstance().getGameSpecificMessage()
-        #    print("Auto Periodic: Game Data = {}".format(autoManager.gameData))
+        subsystems.ultrasonics.enable()
 
-        #    if len(autoManager.gameData) > 0:
-        #        gameDataNearSwitchSide = autoManager.gameData[0]
-        #        gameDataScaleSide = autoManager.gameData[1]
-        #        autoCommandToRun = autoManager.getAction(gameDataNearSwitchSide, gameDataScaleSide)
-        #        autoCommandToRun.start()
-        #        print("Auto Periodic: Started command received from AutoManager")
-        #    else:
-        #        print("Auto Periodic: Error - gameData was zero length!")
-        #super().autonomousPeriodic()
-
-    def teleopPeriodic(self):
-        Scheduler.getInstance().run()
+    def robotPeriodic(self):
         SmartDashboard.putNumber("DL Enc Left", subsystems.driveline.leftEncoder.get())
         SmartDashboard.putNumber("DL Enc Right", subsystems.driveline.rightEncoder.get())
 
@@ -67,6 +67,35 @@ class MyRobot(CommandBasedRobot):
 
         SmartDashboard.putNumber("EL Height V", subsystems.elevator.getHeightVoltage())
         SmartDashboard.putNumber("EL Height Inches", subsystems.elevator.getHeightInches())
+
+        SmartDashboard.putNumber("NavX Yaw", robotmap.sensors.ahrs.getYaw())
+
+        SmartDashboard.putNumber("GO Elevator Axis", oi.goGamePad.getRawAxis(oi.config.axisElevator))
+
+        SmartDashboard.putNumber("Ultrasonics FL", subsystems.ultrasonics.frontLeft.getRangeInches())
+        SmartDashboard.putNumber("Ultrasonics FR", subsystems.ultrasonics.frontRight.getRangeInches())
+
+    def autonomousPeriodic(self):
+        global autoManager
+        try:
+            if len(str(autoManager.gameData)) < 3:
+                autoManager.gameData = str(DriverStation.getInstance().getGameSpecificMessage())
+                print("Auto Periodic: Game Data = {}".format(str(autoManager.gameData)))
+
+                if len(str(autoManager.gameData)) > 0:
+                    gameDataNearSwitchSide = autoManager.gameData[0]
+                    gameDataScaleSide = autoManager.gameData[1]
+                    autoCommandToRun = autoManager.getAction(gameDataNearSwitchSide, gameDataScaleSide)
+                    autoCommandToRun.start()
+                    print("Auto Periodic: Started command received from AutoManager")
+                else:
+                    print("Auto Periodic: Error - gameData was zero length!")
+        except Exception as e:
+            print('autonomousPeriodic: Error! Exception caught running autoManager: {}'.format(e))
+        super().autonomousPeriodic()
+
+    def teleopPeriodic(self):
+        Scheduler.getInstance().run()
 
     def testPeriodic(self):
         wpilib.LiveWindow.run()

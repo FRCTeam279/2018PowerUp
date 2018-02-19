@@ -15,7 +15,7 @@ class CubeGrab(Command):
         self.setRunWhenDisabled(False)
 
     def execute(self):
-        subsystems.harvester.cubeinator3000.set(Relay.Value.kForward)
+        subsystems.harvester.cubeinator3000.set(Relay.Value.kReverse)
 
     def isFinished(self):
         return False

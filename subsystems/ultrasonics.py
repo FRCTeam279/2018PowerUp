@@ -25,8 +25,8 @@ class Ultrasonics(Subsystem):
 
         self.enabled = False
 
-    def initDefaultCommand(self):
-        print(self.logPrefix + "setting default command to PrintUltrasonicRange()")
+    #def initDefaultCommand(self):
+        #print(self.logPrefix + "setting default command to PrintUltrasonicRange()")
 
     def enable(self):
         self.enabled = True

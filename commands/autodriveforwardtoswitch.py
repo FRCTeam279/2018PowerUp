@@ -13,11 +13,13 @@ class AutoDriveForwardToSwitch(CommandGroup):
         self.addSequential(PrintCommand("CMD Group AutoDriveForwardToSwitch: Starting"))
 
         self.addSequential(PrintCommand("CMD Group AutoDriveForwardToSwitch: Drive Forward 132 inches"))
-        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 132, p=0.005, d=0.0,
-                                                      i=0.0, tolerance=75, minSpeed=0.15, maxSpeed=1.0), timeout=5)
+        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 132,
+                                                      p=robotmap.driveLine.pidMedDriveP,
+                                                      i=robotmap.driveLine.pidMedDriveI,
+                                                      d=robotmap.driveLine.pidMedDriveD,
+                                                      tolerance=robotmap.driveLine.pidMedDriveTolerance,
+                                                      minSpeed=robotmap.driveLine.pidMedDriveMinSpeed,
+                                                      maxSpeed=robotmap.driveLine.pidMedDriveMaxSpeed), timeout=5)
 
         self.addSequential(PrintCommand("CMD Group AutoDriveForwardToSwitch: Finished"))
-
-
-
 

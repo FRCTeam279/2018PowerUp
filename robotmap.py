@@ -6,8 +6,9 @@ import wpilib
 # ----------------------------------------------------------
 # Driveline Subsystem Config
 # ----------------------------------------------------------
-# TODO - Turn this off at competition
-devMode = True              # flag if we are at competition and want to use development features in the code
+# flag if we are at competition and want to use development features in the code
+# Robot.init() will set this based on FMS being attached
+devMode = False
 
 
 class ConfigHolder:
@@ -56,6 +57,65 @@ driveLine.minTimeFullThrottleChange = 1.5
 driveLine.maxSpeedChange = (2 * 0.02) / driveLine.minTimeFullThrottleChange
 
 driveLine.controlStyle = "nfs"
+
+
+# Small turns <60 deg
+# medium turns 60 - 90 deg
+# large turns  >90
+driveLine.pidSmallTurnP = 0.02
+driveLine.pidSmallTurnI = 0.00005
+driveLine.pidSmallTurnD = 0.0
+driveLine.pidSmallTurnTolerance = 3
+driveLine.pidSmallTurnMinSpeed = 0.35
+driveLine.pidSmallTurnScaleSpeed = 0.7
+driveLine.pidSmallTurnSamples = 5
+driveLine.pidSmallTurnSteady = 2
+
+driveLine.pidMedTurnP = 0.02
+driveLine.pidMedTurnI = 0.000005
+driveLine.pidMedTurnD = 0.0
+driveLine.pidMedTurnTolerance = 3
+driveLine.pidMedTurnMinSpeed = 0.35
+driveLine.pidMedTurnScaleSpeed = 0.7
+driveLine.pidMedTurnSamples = 5
+driveLine.pidMedTurnSteady = 2
+
+driveLine.pidLargeTurnP = 0.02
+driveLine.pidLargeTurnI = 0.000005
+driveLine.pidLargeTurnD = 0.0
+driveLine.pidLargeTurnTolerance = 3
+driveLine.pidLargeTurnMinSpeed = 0.35
+driveLine.pidLargeTurnScaleSpeed = 0.6
+driveLine.pidLargeTurnSamples = 5
+driveLine.pidLargeTurnSteady = 2
+
+
+# driving forward/backward
+# Suggest using TankDriveMinEncoderDistance (NO PID) for distances ~3 feet
+
+# Small = 48 - 100
+driveLine.pidSmallDriveP = 0.0015
+driveLine.pidSmallDriveI = 0.00005
+driveLine.pidSmallDriveD = 0.0
+driveLine.pidSmallDriveTolerance = 50
+driveLine.pidSmallDriveMinSpeed = 0.35
+driveLine.pidSmallDriveMaxSpeed = 0.8
+
+# Medium = 100 - 200
+driveLine.pidMedDriveP = 0.001
+driveLine.pidMedDriveI = 0.0
+driveLine.pidMedDriveD = 0.0
+driveLine.pidMedDriveTolerance = 70
+driveLine.pidMedDriveMinSpeed = 0.35
+driveLine.pidMedDriveMaxSpeed = 0.5
+
+# Large = 200+
+driveLine.pidLargeDriveP = 0.001
+driveLine.pidLargeDriveI = 0.0
+driveLine.pidLargeDriveD = 0.0
+driveLine.pidLargeDriveTolerance = 100
+driveLine.pidLargeDriveMinSpeed = 0.35
+driveLine.pidLargeDriveMaxSpeed = 0.5
 
 
 # ----------------------------------------------------------
@@ -116,7 +176,7 @@ elevator.s2ScaleSpeedDown = 0.25             # gravity assists
 elevator.s2MaxSpeedAtEdgeUp = 0.1           # Maximum speed we should be at when we impact end
 elevator.s2MaxSpeedAtEdgeDown = 0.1         # Maximum speed we should be at when we impact end
 elevator.s2DistanceToTopToStartSlow = 12    # how far away to start scaling speed down to max
-elevator.s2HoldingSpeed = 0.00              # Motor speed required to hold position - used in method #2
+elevator.s2HoldingSpeed = 0.2              # Motor speed required to hold position - used in method #2
 
 elevator.heightPotPort = 0                  # analog input
 elevator.heightVoltsPerInch = 0.0637        # change to calculated once min/max is measured
