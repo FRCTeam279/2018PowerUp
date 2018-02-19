@@ -122,7 +122,7 @@ driveLine.pidLargeDriveMaxSpeed = 0.5
 # NFS Driving Config
 # ----------------------------------------------------------
 nfs = ConfigHolder()
-nfs.debugTurning = True
+nfs.debugTurning = False
 nfs.lowTurnScale = 0.3              # reduce amount of turn when driving at slow speed, 0.3 = 70% reduction
 nfs.highTurnScale = 0.2             # reduce amount of turn when driving at high (normal) speed, 0.2 = 80% reduction
 nfs.slowDriveSpeedFactor = 0.7      # factor to reduce max speed in slow driving mode. 0.7 = 30% reduction (1.0 * 0.7)
@@ -209,5 +209,6 @@ harvester.rotateDownSpeed = 0.2
 climber = ConfigHolder()
 climber.spdControllerPort = 2       # PWM
 climber.spdControllerReverse = False
+
 print("RobotMap module completed load")
 

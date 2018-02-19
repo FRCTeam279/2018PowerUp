@@ -15,12 +15,11 @@ class TankDriveToEncoderDistance(Command):
     - The encoder used should increment positively for forward movement
     - Left and right wheel speeds will be set the same
     """
-    def __init__(self, target=0.0, p=0.0, i=0.0, d=0.0, tolerance=0.0, minSpeed=0.0, maxSpeed=0.0, useDashboardValues=False):
+    def __init__(self, target=0.0, p=0.0, i=0.0, d=0.0, tolerance=0.0, minSpeed=0.0, maxSpeed=0.0):
         super().__init__('TankDriveToEncoderDistance')
         self.requires(subsystems.driveline)
         self.setInterruptible(True)
         self.setRunWhenDisabled(False)
-        self.useSmartDashboardValues = useDashboardValues
         self.target = target
         self.kP = p
         self.kI = i
@@ -32,18 +31,6 @@ class TankDriveToEncoderDistance(Command):
         self.logCounter = 0
 
     def initialize(self):
-        #print("CMD TankDriveToEncoderDistance initialize called")
-        if self.useSmartDashboardValues:
-            self.target = SmartDashboard.getNumber("DriveEnc Target", 0.0)
-
-            self.kP = SmartDashboard.getNumber("DriveEnc P", 0.005)
-            self.kI = SmartDashboard.getNumber("DriveEnc I", 0.0)
-            self.kD = SmartDashboard.getNumber("DriveEnc D", 0.0)
-
-            self.tolerance = SmartDashboard.getNumber("DriveEnc Tolerance", 500.0)
-            self.minSpeed = SmartDashboard.getNumber("DriveEnc MinSpeed", 0.0)
-            self.maxSpeed = SmartDashboard.getNumber("DriveEnc MaxSpeed", 1.0)
-
         subsystems.driveline.resetEncoders()
         subsystems.driveline.pidController.setSetpoint(self.target)
         subsystems.driveline.pidController.setAbsoluteTolerance(self.tolerance)

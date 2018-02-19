@@ -45,6 +45,7 @@ class AutoManager:
 
         SmartDashboard.putData("Preferred Element", self.preferredElement)
         SmartDashboard.putData("Starting Position", self.startingPosition)
+        print("AutoManager: Initialized")
         self.initialized = True
 
     def getStartingPosition(self):
@@ -104,7 +105,7 @@ class AutoManager:
             if self.getPreferredElement() == 'crossLine':
                 print("AutoManager.GetAction: AutoDriveForward - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(
                         self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
-                return AutoDriveForward()
+                return AutoDriveForwardToSwitch()
 
             if self.getPreferredElement() == 'switch' and nearSwitchSide=='R':
                 print("AutoManager.GetAction: AutoLoadSwitchToRightFromSide - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(

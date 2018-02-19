@@ -55,6 +55,7 @@ config.goGamePadStickScale = 1.5            # for the FilterInput function
 
 
 config.axisElevator = 1
+config.axisClimber = 3
 config.btnElevatorMoveToBottomIndex = 5         # 5 = left bumper
 config.btnElevatorMoveToTopIndex = 6            # 6 = right bumper
 config.btnElevatorCalibrateHeightIndex = 8      # 8 = start

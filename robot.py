@@ -15,6 +15,7 @@ import oi
 from automanager import AutoManager
 
 autoManager = None
+testChooser = None
 
 
 class MyRobot(CommandBasedRobot):
@@ -39,7 +40,7 @@ class MyRobot(CommandBasedRobot):
         if robotmap.sensors.hasAHRS:
             try:
                 robotmap.sensors.ahrs = navx.AHRS.create_spi()
-                # use via robotmap.sensors.ahrs.getAngle()
+                # use via robotmap.sensors.ahrs.getAngle() or getYaw()
                 print('robotInit: NavX Setup')
             except:
                 if not DriverStation.getInstance().isFmsAttached():
@@ -55,25 +56,12 @@ class MyRobot(CommandBasedRobot):
 
         subsystems.ultrasonics.enable()
 
-    def robotPeriodic(self):
-        SmartDashboard.putNumber("DL Enc Left", subsystems.driveline.leftEncoder.get())
-        SmartDashboard.putNumber("DL Enc Right", subsystems.driveline.rightEncoder.get())
-
-        SmartDashboard.putNumber("EL S1 Top", subsystems.elevator.s1TopLimit())
-        SmartDashboard.putNumber("EL S1 Bottom", subsystems.elevator.s1BottomLimit())
-
-        SmartDashboard.putNumber("EL S2 Top", subsystems.elevator.s2TopLimit())
-        SmartDashboard.putNumber("EL S2 Bottom", subsystems.elevator.s2BottomLimit())
-
-        SmartDashboard.putNumber("EL Height V", subsystems.elevator.getHeightVoltage())
-        SmartDashboard.putNumber("EL Height Inches", subsystems.elevator.getHeightInches())
-
-        SmartDashboard.putNumber("NavX Yaw", robotmap.sensors.ahrs.getYaw())
-
-        SmartDashboard.putNumber("GO Elevator Axis", oi.goGamePad.getRawAxis(oi.config.axisElevator))
-
-        SmartDashboard.putNumber("Ultrasonics FL", subsystems.ultrasonics.frontLeft.getRangeInches())
-        SmartDashboard.putNumber("Ultrasonics FR", subsystems.ultrasonics.frontRight.getRangeInches())
+        global testChooser
+        testChooser = wpilib.SendableChooser()
+        testChooser.addObject('thing 1', 0)
+        testChooser.addObject('thing 2', 1)
+        testChooser.addObject('thing 3', 2)
+        SmartDashboard.putData("testChooser", testChooser)
 
     def autonomousPeriodic(self):
         global autoManager
@@ -96,6 +84,45 @@ class MyRobot(CommandBasedRobot):
 
     def teleopPeriodic(self):
         Scheduler.getInstance().run()
+        SmartDashboard.putNumber("DL Enc Left", subsystems.driveline.leftEncoder.get())
+        SmartDashboard.putNumber("DL Enc Right", subsystems.driveline.rightEncoder.get())
+
+        SmartDashboard.putNumber("EL S1 Top", subsystems.elevator.s1TopLimit())
+        SmartDashboard.putNumber("EL S1 Bottom", subsystems.elevator.s1BottomLimit())
+
+        SmartDashboard.putNumber("EL S2 Top", subsystems.elevator.s2TopLimit())
+        SmartDashboard.putNumber("EL S2 Bottom", subsystems.elevator.s2BottomLimit())
+
+        SmartDashboard.putNumber("EL Height V", subsystems.elevator.getHeightVoltage())
+        SmartDashboard.putNumber("EL Height Inches", subsystems.elevator.getHeightInches())
+
+        #SmartDashboard.putNumber("NavX Yaw", robotmap.sensors.ahrs.getYaw())
+
+        #SmartDashboard.putNumber("GO Elevator Axis", oi.goGamePad.getRawAxis(oi.config.axisElevator))
+
+        SmartDashboard.putNumber("Ultrasonics FL", subsystems.ultrasonics.frontLeft.getRangeInches())
+        SmartDashboard.putNumber("Ultrasonics FR", subsystems.ultrasonics.frontRight.getRangeInches())
+
+    def disabledPeriodic(self):
+        Scheduler.getInstance().run()
+        SmartDashboard.putNumber("DL Enc Left", subsystems.driveline.leftEncoder.get())
+        SmartDashboard.putNumber("DL Enc Right", subsystems.driveline.rightEncoder.get())
+
+        SmartDashboard.putNumber("EL S1 Top", subsystems.elevator.s1TopLimit())
+        SmartDashboard.putNumber("EL S1 Bottom", subsystems.elevator.s1BottomLimit())
+
+        SmartDashboard.putNumber("EL S2 Top", subsystems.elevator.s2TopLimit())
+        SmartDashboard.putNumber("EL S2 Bottom", subsystems.elevator.s2BottomLimit())
+
+        SmartDashboard.putNumber("EL Height V", subsystems.elevator.getHeightVoltage())
+        SmartDashboard.putNumber("EL Height Inches", subsystems.elevator.getHeightInches())
+
+        #SmartDashboard.putNumber("NavX Yaw", robotmap.sensors.ahrs.getYaw())
+
+        #SmartDashboard.putNumber("GO Elevator Axis", oi.goGamePad.getRawAxis(oi.config.axisElevator))
+
+        SmartDashboard.putNumber("Ultrasonics FL", subsystems.ultrasonics.frontLeft.getRangeInches())
+        SmartDashboard.putNumber("Ultrasonics FR", subsystems.ultrasonics.frontRight.getRangeInches())
 
     def testPeriodic(self):
         wpilib.LiveWindow.run()

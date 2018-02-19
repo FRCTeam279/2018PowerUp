@@ -20,13 +20,12 @@ class TankDriveTurnToHeading(Command):
     ScaleSpeed is how much to reduce the PID output value by to apply to each wheel (eg.. 0.5 will apply half to each
     wheel which is equivilent to the intended output vs no scaling which effectively doubles the turn speed)
     """
-    def __init__(self, target=0.0, p=0.0, i=0.0, d=0.0, tolerance=0.0, minSpeed=0.0, numSamples=4, steadyRate=2.0, scaleSpeed=0.5, useDashboardValues=False):
+    def __init__(self, target=0.0, p=0.0, i=0.0, d=0.0, tolerance=0.0, minSpeed=0.0, numSamples=4, steadyRate=2.0, scaleSpeed=0.5):
         super().__init__('TankDriveTurnToHeading')
         self.requires(subsystems.driveline)
         self.setInterruptible(True)
         self.setRunWhenDisabled(False)
         self.logCounter = 0
-        self.useSmartDashboardValues = useDashboardValues
         self.target = target
         self.kP = p
         self.kI = i
@@ -44,16 +43,6 @@ class TankDriveTurnToHeading(Command):
 
 
     def initialize(self):
-        #print("CMD TurnToHeading initialize called")
-        if self.useSmartDashboardValues:
-            self.target = SmartDashboard.getNumber("Turn Target", 0.0)
-            self.tolerance = SmartDashboard.getNumber("Turn Tolerance", 500.0)
-            self.tolerance = SmartDashboard.getNumber("Turn minSpeed", 0.0)
-            self.scaleSpeed = SmartDashboard.getNumber("Turn scaleSpeed", 0.5)
-            self.kP = SmartDashboard.getNumber("Turn P", 0.05)
-            self.kI = SmartDashboard.getNumber("Turn I", 0.001)
-            self.kD = SmartDashboard.getNumber("Turn D", 0.01)
-
         subsystems.driveline.turnPID.minSpeed = self.minSpeed
         subsystems.driveline.turnPID.scaleSpeed = self.scaleSpeed
         subsystems.driveline.pidTurnController.setOutputRange(-1.0, 1.0)

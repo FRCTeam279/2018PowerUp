@@ -1,7 +1,10 @@
 from wpilib.command import CommandGroup, PrintCommand
 
 import robotmap
+from commands.cubeeject import CubeEject
+from commands.cuberotatedown import CubeRotateDown
 from commands.delay import Delay
+from commands.tankdriveminencoderdistance import TankDriveMinEncoderDistance
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
 from commands.tankdriveturntoheading import TankDriveTurnToHeading
 
@@ -48,18 +51,15 @@ class AutoLoadSwitchToRightFromSide(CommandGroup):
                                                   steadyRate=robotmap.driveLine.pidMedTurnSteady,
                                                   scaleSpeed=robotmap.driveLine.pidMedTurnScaleSpeed), timeout=5)
 
-        self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Raise"))
-        # self.addSequential(CubeRaise(8))  #make sure we aren't interfering with switch
-
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Move In"))
         # TODO - drive to ultrasonic distance ?
         self.addSequential(TankDriveMinEncoderDistance(target=robotmap.driveLine.inchesPerTick * 20, speed=0.4), timeout=3)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Rotate Level"))
-        # self.addSequential(CubeRotateLevel())
+        self.addSequential(CubeRotateDown(), timeout=5.5)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Eject"))
-        # self.addSequential(EjectCube())
+        self.addSequential(CubeEject(), timeout=3)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadSwitchToRightFromSide: Finished"))
 

@@ -140,14 +140,6 @@ class TankDrive(Subsystem):
         self.turnPID = TankPIDTurn(0.0, 0.5)
         self.pidTurnController = PIDController(0.0, 0.0, 0.0, self.turnPID, self.turnPID)
 
-        SmartDashboard.putNumber("DriveEnc Target", 0.0)
-        SmartDashboard.putNumber("DriveEnc P", 0.005)
-        SmartDashboard.putNumber("DriveEnc I", 0.0)
-        SmartDashboard.putNumber("DriveEnc D", 0.0)
-        SmartDashboard.putNumber("DriveEnc Tolerance", 250.0)
-        SmartDashboard.putNumber("DriveEnc MinSpeed", 0.0)
-        SmartDashboard.putNumber("DriveEnc MaxSpeed", 1.0)
-
     # ------------------------------------------------------------------------------------------------------------------
     def initDefaultCommand(self):
         if robotmap.driveLine.controlStyle == "nfs":

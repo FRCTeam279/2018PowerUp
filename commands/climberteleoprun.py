@@ -14,7 +14,7 @@ class ClimberTeleopRun(Command):
         
     def execute(self):
         # TODO - validate if we're at the end of the match and ready to climb, should we require another button too??
-        speed = oi.goGamePad.getRawAxis(3)
+        speed = oi.goGamePad.getRawAxis(oi.config.axisClimber)
         subsystems.climber.climbUp(speed)
 
     def isFinished(self):

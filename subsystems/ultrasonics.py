@@ -17,30 +17,27 @@ class Ultrasonics(Subsystem):
             self.frontLeft = Ultrasonic(robotmap.ultrasonics.frontLeftPingPort, robotmap.ultrasonics.frontLeftEchoPort)
         except:
             print("Ultrasonics: Error!!! Could not create front left ultrasonic!")
-
         try:
             self.frontRight = Ultrasonic(robotmap.ultrasonics.frontRightPingPort, robotmap.ultrasonics.frontRightEchoPort)
         except:
             print("Ultrasonics: Error!!! Could not create front right ultrasonic!")
-
         self.enabled = False
-
-    #def initDefaultCommand(self):
-        #print(self.logPrefix + "setting default command to PrintUltrasonicRange()")
 
     def enable(self):
         self.enabled = True
-        if self.frontLeft:
-            self.frontLeft.setAutomaticMode(True)
-        if self.frontRight:
-            self.frontRight.setAutomaticMode(True)          #yes, this is redundant.. unless the left one didn't work
+        # if self.frontLeft:
+        self.frontLeft.setAutomaticMode(True)
+        self.frontLeft.setEnabled(True)
+        # if self.frontRight:
+        self.frontRight.setEnabled(True)
+        self.frontLeft.setAutomaticMode(True)
 
     def disable(self):
         self.enabled = False
         if self.frontLeft:
-            self.frontLeft.setAutomaticMode(False)
+            self.frontLeft.setEnabled(False)
         if self.frontRight:
-            self.frontRight.setAutomaticMode(False)          #yes, this is redundant.. unless the left one didn't work
+            self.frontRight.setEnabled(False)
 
     def getFrontDistance(self):
         frontLeft = -1

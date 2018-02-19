@@ -1,6 +1,8 @@
 from wpilib.command import CommandGroup, PrintCommand
 
 import robotmap
+from commands.cubeeject import CubeEject
+from commands.cuberotatedown import CubeRotateDown
 from commands.delay import Delay
 from commands.tankdriveminencoderdistance import TankDriveMinEncoderDistance
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
@@ -79,12 +81,8 @@ class AutoLoadSwitchFromMid(CommandGroup):
         self.addSequential(TankDriveMinEncoderDistance(target=robotmap.driveLine.inchesPerTick * 24, speed=0.4), timeout=3)
 
         if side == 'L' or side == 'R':
-            pass
-            # self.addSequential(CubeRaise(12))     #make sure we aren't interfering with switch
-            # self.addSequential(Delay(250))
-            # self.addSequential(CubeRotateLevel())
-            # self.addSequential(Delay(250))
-            # self.addSequential(EjectCube())
+            self.addSequential(CubeRotateDown(), timeout=5.5)
+            self.addSequential(CubeEject(), timeout=3)
         else:
             self.addSequential(PrintCommand("CMD Group AutoLoadSwitchFromMid: invalid value passed for side, will not unload cube"))
 
