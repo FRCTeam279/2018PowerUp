@@ -49,9 +49,11 @@ config.btnResetYawAngleIndex = 2
 
 
 # GO Gamepad (Logitech)
+# https://www.desmos.com/calculator/uh8th7djep
 config.goGamePadNullZone = 0.03
-config.goGamePadStickFilterFactor = 0.2     # for the FilterInput function
-config.goGamePadStickScale = 1.5            # for the FilterInput function
+config.goGamePadStickScale = 0.5            # for the FilterInput function
+config.goGamePadStickFilterFactor = 1.0     # for the FilterInput function
+
 
 
 config.axisElevator = 1

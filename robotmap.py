@@ -157,26 +157,26 @@ elevator.s1TopLimitNormalClosed = False     # switch is wired to be normally cos
 elevator.s1SpdControllerPort = 3            # pwm
 elevator.s1SpdControllerReverse = False
 
-elevator.s1ScaleSpeedUp = 0.4               # how much to adjust desired speed by (1 = no change - 100%)
-elevator.s1ScaleSpeedDown = 0.3             # gravity assists
+elevator.s1ScaleSpeedUp = 1.0               # how much to adjust desired speed by (1 = no change - 100%)
+elevator.s1ScaleSpeedDown = 1.0             # gravity assists
 elevator.s1MaxSpeedAtEdgeUp = 0.1           # Maximum speed we should be at when we impact end
 elevator.s1MaxSpeedAtEdgeDown = 0.1           # Maximum speed we should be at when we impact end
 elevator.s1DistanceToTopToStartSlow = 12    # how far away to start scaling speed down to max
-elevator.s1HoldingSpeed = 0.1
+elevator.s1HoldingSpeed = 0.0
 
 elevator.s2BottomLimitPort = 6              # digital input
 elevator.s2BottomLimitNormalClosed = False  # switch is wired to be normally cosed, so will return True when not tripped
 elevator.s2TopLimitPort = 7                 # digital input
 elevator.s2TopLimitNormalClosed = False     # switch is wired to be normally cosed, so will return True when not tripped
 elevator.s2SpdControllerPort = 4            # pwm
-elevator.s2SpdControllerReverse = True
+elevator.s2SpdControllerReverse = False
 
 elevator.s2ScaleSpeedUp = 1.0               # how much to adjust desired speed by (1 = no change - 100%)
-elevator.s2ScaleSpeedDown = 0.25             # gravity assists
+elevator.s2ScaleSpeedDown = 0.7             # gravity assists
 elevator.s2MaxSpeedAtEdgeUp = 0.1           # Maximum speed we should be at when we impact end
 elevator.s2MaxSpeedAtEdgeDown = 0.1         # Maximum speed we should be at when we impact end
 elevator.s2DistanceToTopToStartSlow = 12    # how far away to start scaling speed down to max
-elevator.s2HoldingSpeed = 0.2              # Motor speed required to hold position - used in method #2
+elevator.s2HoldingSpeed = 0.0              # Motor speed required to hold position - used in method #2
 
 elevator.heightPotPort = 0                  # analog input
 elevator.heightVoltsPerInch = 0.0637        # change to calculated once min/max is measured
