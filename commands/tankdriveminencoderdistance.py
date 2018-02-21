@@ -31,6 +31,8 @@ class TankDriveMinEncoderDistance(Command):
         subsystems.driveline.driveRaw(self.speed, self.speed)
 
     def isFinished(self):
+        # TODO - this will not work driving backwards
+        # TODO - this did not calculate and end correctly
         count = subsystems.driveline.getAvgEncoder()
         return count > self.target
 

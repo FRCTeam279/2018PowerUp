@@ -38,7 +38,7 @@ class AutoLoadSwitchToLeftFromSide(CommandGroup):
                                                       maxSpeed=robotmap.driveLine.pidMedDriveMaxSpeed), timeout=5)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadSwitchToLeftFromSide: Delay"))
-        self.addSequential(Delay(1000))
+        self.addSequential(Delay(500))
 
         self.addSequential(PrintCommand("CMD Group AutoLoadSwitchToLeftFromSide: Turn to 90 deg"))
         self.addSequential(TankDriveTurnToHeading(target=90.0,
@@ -53,10 +53,17 @@ class AutoLoadSwitchToLeftFromSide(CommandGroup):
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Move In"))
         # TODO - drive to ultrasonic distance ?
-        self.addSequential(TankDriveMinEncoderDistance(target=robotmap.driveLine.inchesPerTick * 20, speed=0.4), timeout=3)
+        #self.addSequential(TankDriveMinEncoderDistance(target=robotmap.driveLine.inchesPerTick * 20, speed=0.4), timeout=3)
+        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 20,
+                                                      p=robotmap.driveLine.pidSmallDriveP,
+                                                      i=robotmap.driveLine.pidSmallDriveI,
+                                                      d=robotmap.driveLine.pidSmallDriveD,
+                                                      tolerance=robotmap.driveLine.pidSmallDriveTolerance,
+                                                      minSpeed=robotmap.driveLine.pidSmallDriveMinSpeed,
+                                                      maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=3)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Rotate Down"))
-        self.addSequential(CubeRotateDown(), timeout=5.5)
+        self.addSequential(CubeRotateDown(), timeout=5)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Eject"))
         self.addSequential(CubeEject(), timeout=3)

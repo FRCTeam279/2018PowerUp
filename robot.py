@@ -55,10 +55,14 @@ class MyRobot(CommandBasedRobot):
 
         subsystems.ultrasonics.enable()
 
+    def autonomousInit(self):
+        super().autonomousInit()
+        autoManager.gameData = None
+
     def autonomousPeriodic(self):
         global autoManager
         try:
-            if len(str(autoManager.gameData)) < 3:
+            if not autoManager.gameData:
                 autoManager.gameData = str(DriverStation.getInstance().getGameSpecificMessage())
                 print("Auto Periodic: Game Data = {}".format(str(autoManager.gameData)))
 

@@ -1,6 +1,7 @@
 from wpilib.command import CommandGroup, PrintCommand
 
 import robotmap
+from commands.cuberotatedown import CubeRotateDown
 from commands.delay import Delay
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
 from commands.tankdriveturntoheading import TankDriveTurnToHeading
@@ -38,7 +39,7 @@ class AutoLoadScaleToRight(CommandGroup):
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToRight: Rotate in"))
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToRight: Cube Rotate Level"))
-        # self.addSequential(CubeRotateLevel())
+        self.addSequential(CubeRotateDown(), timeout=5)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToRight: Cube Raise"))
         # self.addSequential(CubeRaise(8))  #make sure we aren't interfering with switch

@@ -19,7 +19,7 @@ class AutoDriveForwardToScale(CommandGroup):
                                                       d=robotmap.driveLine.pidLargeDriveD,
                                                       tolerance=robotmap.driveLine.pidLargeDriveTolerance,
                                                       minSpeed=robotmap.driveLine.pidLargeDriveMinSpeed,
-                                                      maxSpeed=robotmap.driveLine.pidLargeDriveMaxSpeed), timeout=5)
+                                                      maxSpeed=robotmap.driveLine.pidLargeDriveMaxSpeed), timeout=6)
 
         self.addSequential(PrintCommand("CMD Group AutoDriveForwardToScale: Finished"))
 
