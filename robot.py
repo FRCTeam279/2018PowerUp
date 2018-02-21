@@ -15,7 +15,6 @@ import oi
 from automanager import AutoManager
 
 autoManager = None
-testChooser = None
 
 
 class MyRobot(CommandBasedRobot):
@@ -55,13 +54,6 @@ class MyRobot(CommandBasedRobot):
         oi.init()
 
         subsystems.ultrasonics.enable()
-
-        global testChooser
-        testChooser = wpilib.SendableChooser()
-        testChooser.addObject('thing 1', 0)
-        testChooser.addObject('thing 2', 1)
-        testChooser.addObject('thing 3', 2)
-        SmartDashboard.putData("testChooser", testChooser)
 
     def autonomousPeriodic(self):
         global autoManager

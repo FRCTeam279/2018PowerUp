@@ -61,7 +61,7 @@ class AutoManager:
         # Middle Starting Spot
         # ---------------------------------------------
         if self.getStartingPosition() == 'middle':
-            print("AutoManager.GetAction: Starting in middle, nearSwitchSide={}, returning AutoLoadSwitchToLeftFromMid".format(nearSwitchSide))
+            print("AutoManager.GetAction: Starting in middle, nearSwitchSide={}, returning AutoLoadSwitchFromMid".format(nearSwitchSide))
             return AutoLoadSwitchFromMid(nearSwitchSide)
 
         # ---------------------------------------------
