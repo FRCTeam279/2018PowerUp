@@ -88,8 +88,6 @@ class TankDriveTurnToHeading(Command):
                         self.target, robotmap.sensors.ahrs.getYaw(), self.tolerance))
 
         if self.numSamples > 0:
-            if self.useSmartDashboardValues:
-                SmartDashboard.putNumber("AvgRateYawDPS", avgRate)
             if avgRate < self.steadyRate:
                 if math.fabs(self.target - robotmap.sensors.ahrs.getYaw()) < self.tolerance:
                     # print("CMD TurnToHeading isFinished is True")
