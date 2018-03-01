@@ -3,6 +3,7 @@ from wpilib.command import CommandGroup, PrintCommand
 import robotmap
 from commands.cuberotatedown import CubeRotateDown
 from commands.delay import Delay
+from commands.elevatormovetovoltage import ElevatorMoveToVoltage
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
 from commands.tankdriveturntoheading import TankDriveTurnToHeading
 
@@ -42,7 +43,7 @@ class AutoLoadScaleToRight(CommandGroup):
         self.addSequential(CubeRotateDown(), timeout=5)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToRight: Cube Raise"))
-        # self.addSequential(CubeRaise(8))  #make sure we aren't interfering with switch
+        self.addSequential(ElevatorMoveToVoltage(2.79), 5)  #make sure we aren't interfering with switch
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToRight: Move In"))
         # move in a bit more

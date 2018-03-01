@@ -169,7 +169,7 @@ def init():
     btnCrateLoad = JoystickButton(goGamePad, config.btnCrateLoadIndex)
     btnCrateEject = JoystickButton(goGamePad, config.btnCrateEjectIndex)
     btnCubeEjectLeft = JoystickButton(goGamePad, config.btnCubeEjectLeft)       # will be used in default command
-    btnCubeEjectRight = JoystickButton(goGamePad, config.btnCubeEjectLeft)      # will be used in default command
+    btnCubeEjectRight = JoystickButton(goGamePad, config.btnCubeEjectRight)      # will be used in default command
     btnCrateRotateUp = JoystickButton(goGamePad, config.btnCubeRotateUp)
     btnCrateRotateDown = JoystickButton(goGamePad, config.btnCubeRotateDown)
     btnCrateLoad.whileHeld(CubeGrab())

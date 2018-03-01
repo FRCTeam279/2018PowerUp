@@ -176,7 +176,7 @@ elevator.s1ScaleSpeedDown = 1.0             # gravity assists
 elevator.s1MaxSpeedAtEdgeUp = 0.1           # Maximum speed we should be at when we impact end
 elevator.s1MaxSpeedAtEdgeDown = 0.1           # Maximum speed we should be at when we impact end
 elevator.s1DistanceToTopToStartSlow = 12    # how far away to start scaling speed down to max
-elevator.s1HoldingSpeed = 0.0
+elevator.s1HoldingSpeed = 0.05
 
 elevator.s2BottomLimitPort = 6              # digital input
 elevator.s2BottomLimitNormalClosed = False  # switch is wired to be normally cosed, so will return True when not tripped
@@ -194,14 +194,14 @@ elevator.s2HoldingSpeed = 0.0              # Motor speed required to hold positi
 
 elevator.heightPotPort = 0                  # analog input
 elevator.heightVoltsPerInch = 0.0637        # change to calculated once min/max is measured
-elevator.heightActualMinVolts = 0.0         # Set via calibration routine
-elevator.heightActualMaxVolts = 5.0         # Set via Calibration routine
+elevator.heightActualMinVolts = 0.004
+elevator.heightActualMaxVolts = 4.27
 elevator.heightMaxInches = 74               # Measure and record
 
-elevator.s1AutoMoveUpSpeed = 0.2            # How fast to move when doing a move-to-height command
-elevator.s1AutoMoveDownSpeed = 0.15
+elevator.s1AutoMoveUpSpeed = 0.3                 # How fast to move when doing a move-to-height command
+elevator.s1AutoMoveDownSpeed = -0.25
 elevator.s2AutoMoveUpSpeed = 0.3
-elevator.s2AutoMoveDownSpeed = 0.25
+elevator.s2AutoMoveDownSpeed = -0.25
 
 
 # ----------------------------------------------------------

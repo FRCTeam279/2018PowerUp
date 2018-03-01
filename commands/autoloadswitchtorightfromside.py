@@ -4,6 +4,7 @@ import robotmap
 from commands.cubeeject import CubeEject
 from commands.cuberotatedown import CubeRotateDown
 from commands.delay import Delay
+from commands.elevatormovetovoltage import ElevatorMoveToVoltage
 from commands.tankdriveminencoderdistance import TankDriveMinEncoderDistance
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
 from commands.tankdriveturntoheading import TankDriveTurnToHeading
@@ -37,6 +38,9 @@ class AutoLoadSwitchToRightFromSide(CommandGroup):
                                                       minSpeed=robotmap.driveLine.pidMedDriveMinSpeed,
                                                       maxSpeed=robotmap.driveLine.pidMedDriveMaxSpeed), timeout=5)
 
+        self.addParallel(PrintCommand("CMD Group AutoLoadSwitchToRightFromSide: Raising elevator to 1.21V"))
+        self.addParallel(ElevatorMoveToVoltage(1.21), 3)
+
         self.addSequential(PrintCommand("CMD Group AutoLoadSwitchToRightFromSide: Delay"))
         self.addSequential(Delay(500))
 
@@ -60,7 +64,7 @@ class AutoLoadSwitchToRightFromSide(CommandGroup):
                                                       d=robotmap.driveLine.pidSmallDriveD,
                                                       tolerance=robotmap.driveLine.pidSmallDriveTolerance,
                                                       minSpeed=robotmap.driveLine.pidSmallDriveMinSpeed,
-                                                      maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=3)
+                                                      maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=2)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Rotate Level"))
         self.addSequential(CubeRotateDown(), timeout=5)

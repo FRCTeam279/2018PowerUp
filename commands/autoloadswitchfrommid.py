@@ -4,6 +4,7 @@ import robotmap
 from commands.cubeeject import CubeEject
 from commands.cuberotatedown import CubeRotateDown
 from commands.delay import Delay
+from commands.elevatormovetovoltage import ElevatorMoveToVoltage
 from commands.tankdriveminencoderdistance import TankDriveMinEncoderDistance
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
 from commands.tankdriveturntoheading import TankDriveTurnToHeading
@@ -29,6 +30,9 @@ class AutoLoadSwitchFromMid(CommandGroup):
                                                       tolerance=robotmap.driveLine.pidSmallDriveTolerance,
                                                       minSpeed=robotmap.driveLine.pidSmallDriveMinSpeed,
                                                       maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=3)
+
+        self.addParallel(PrintCommand("CMD Group AutoLoadSwitchFromMid: Raising elevator to 1.21V"))
+        self.addParallel(ElevatorMoveToVoltage(1.21), 3)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadSwitchFromMid: Delay"))
         self.addSequential(Delay(250))
