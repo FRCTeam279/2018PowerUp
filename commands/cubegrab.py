@@ -15,10 +15,12 @@ class CubeGrab(Command):
         self.setRunWhenDisabled(False)
 
     def execute(self):
-        subsystems.harvester.cubeinator3000.set(Relay.Value.kReverse)
+        subsystems.harvester.cubeIntakeLeft()
+        subsystems.harvester.cubeIntakeRight()
 
     def isFinished(self):
         return False
 
     def interrupted(self):
-        subsystems.harvester.cubeinator3000.set(Relay.Value.kOff)
+        subsystems.harvester.cubeStopLeft()
+        subsystems.harvester.cubeStopRight()

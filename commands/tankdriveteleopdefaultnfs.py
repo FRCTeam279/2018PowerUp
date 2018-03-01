@@ -12,8 +12,7 @@ class TankDriveTeleopDefaultNFS(Command):
     This command uses a throttle and turning control scheme in the same manner as Need for Speed
     It's intended to make a robot that uses skid steering feel like a car
 
-    Speed of turning will be adjusted based on throttle, and spining one way then reversing will not happen instantly
-
+    Speed of turning will be adjusted based on throttle, and spinning one way then reversing will not happen instantly
     Also, spinning one direction and then taking throttle to full reverse will reverse the direction of turn
     """
 
@@ -26,23 +25,16 @@ class TankDriveTeleopDefaultNFS(Command):
         self.targetRightSpeed = 0.0
 
     def execute(self):
-        # subsystems.drive.driveRaw(oi.leftJoystick.getY(), oi.rightJoystick.getY())
+        throttle = oi.filterInputToPower(oi.getRawThrottle(),
+                                         oi.config.leftDriverStickNullZone, oi.config.throttleFilterPower)
 
-        throttle = oi.getRawThrottle()
-        turn = oi.getRawTurn()
-
-        if robotmap.nfs.debugTurning:
-            SmartDashboard.putNumber("Raw Throttle", throttle)
-            SmartDashboard.putNumber("Raw Turn", turn)
-
-        throttle = oi.applyDeadZone(throttle, oi.config.leftDriverStickNullZone)
-        turn = oi.applyDeadZone(turn, oi.config.rightDriverStickNullZone)
+        turn = oi.filterInputToPower(oi.getRawTurn(), oi.config.rightDriverStickNullZone, oi.config.turnFilterPower)
 
         if robotmap.nfs.debugTurning:
             SmartDashboard.putNumber("Throttle", throttle)
             SmartDashboard.putNumber("Turn", turn)
 
-        if oi.leftDriverStick.getTrigger():
+        if oi.btnDriveSlow.get():
             throttle *= robotmap.nfs.slowDriveSpeedFactor
             turn *= robotmap.nfs.slowDriveSpeedFactor
 
@@ -58,17 +50,17 @@ class TankDriveTeleopDefaultNFS(Command):
         leftSpeedDiff = lastLeftSpeed - self.targetLeftSpeed
         rightSpeedDiff = lastRightSpeed - self.targetRightSpeed
 
-        if math.fabs(leftSpeedDiff) > robotmap.driveLine.maxSpeedChange:
+        if math.fabs(leftSpeedDiff) > robotmap.nfs.maxSpeedChange:
             if leftSpeedDiff > 0.0:
-                leftSpeedDiff = robotmap.driveLine.maxSpeedChange
+                leftSpeedDiff = robotmap.nfs.maxSpeedChange
             if leftSpeedDiff < 0.0:
-                leftSpeedDiff = robotmap.driveLine.maxSpeedChange * -1.0
+                leftSpeedDiff = robotmap.nfs.maxSpeedChange * -1.0
 
-        if math.fabs(rightSpeedDiff) > robotmap.driveLine.maxSpeedChange:
+        if math.fabs(rightSpeedDiff) > robotmap.nfs.maxSpeedChange:
             if rightSpeedDiff > 0.0:
-                rightSpeedDiff = robotmap.driveLine.maxSpeedChange
+                rightSpeedDiff = robotmap.nfs.maxSpeedChange
             if rightSpeedDiff < 0.0:
-                rightSpeedDiff = robotmap.driveLine.maxSpeedChange * -1.0
+                rightSpeedDiff = robotmap.nfs.maxSpeedChange * -1.0
 
         adjustedLeft = lastLeftSpeed - leftSpeedDiff
         adjustedRight = lastRightSpeed - rightSpeedDiff
@@ -100,26 +92,24 @@ class TankDriveTeleopDefaultNFS(Command):
         The amount reduced will be itself reduced based on the throttle
         Example: for full throttle (1.0), and full turn (1.0)
         a reasonably tight arc is found if the fast side is at +1 and the slow side is at +0.3
-        So the max reduction would be -2 (to get a +1 value fully reversed to -1.0), and a minimum reduction would be -0.7
+        The ammount to reduce the turn by, is found by:
+            reduction range = 1 - (turnScale * throttle)
+
+        And the actual slow side speed found by
+            slowSide = throttle - (turn * range)
+
+        In the above example, if the scale is 0.3, the reduction range = 0.7  from    1 - (0.3 * 1.0)
+
 
         Are there any situations in which the fast side would need to be increased?
         Yes - if the throttle is lower than the turn, the turn reduction to the slow side will be out of kilter with the fast side
-                Example - at zero throttle, fast and slow sides should be the inverse of each other
+        This will cause the robot to actually drive a bit in the opposite direction
 
-            potential solution:
-            if the abs value of slow side is > than fast side, set fast side = slow side
+
 
         :param rawThrottleSpeed: Throttle value after filtering joystick input -1.0 to +1.0
         :param rawTurnSpeed: Turn value after filtering -1.0 to +1.0
         """
-
-
-        # TODO - examine idea of using a minimum speed when throttle is bieng used.  For example,
-        # many robots won't start moving until 20-30% power is applied.  Scale from that value rather than zero when
-        # applying throttle?
-
-        # TODO - Explor actually setting throttle = turn when abs(fast side) is < abs(slow side) to avoid going
-        # in reverse when throttle is low and turning
 
         leftSpeed = 0.0
         rightSpeed = 0.0
@@ -150,7 +140,7 @@ class TankDriveTeleopDefaultNFS(Command):
 
         if turn != 0.0:
             fastSide = rawThrottleSpeed
-            if oi.leftDriverStick.getTrigger():
+            if oi.btnDriveSlow.get():
                 # heavy scaling when driving slow
                 turnScale = robotmap.nfs.highTurnScale
             else:
@@ -162,8 +152,21 @@ class TankDriveTeleopDefaultNFS(Command):
             slowSide *= throttleSign
 
             if throttle == 0.0:
+                # if there's zero throttle, a turn should just spin
                 if math.fabs(fastSide) < math.fabs(slowSide):
                     fastSide = slowSide * -1.0
+            else:
+                # Stop driving the opposite direction if a tiny bit of throttle is given, and more turn is
+                # overpowering it
+                # TODO - This section is experimental
+                # It appears to do what we want, but needs more testing.  It makes the robot more inclined to spin
+                # at slow throttle speeds, but does seem to stop it driving in the reverse direction due to how turn
+                # is accomplished
+                if math.fabs(fastSide) < math.fabs(slowSide):
+                    if fastSide > 0.0:
+                        fastSide = math.fabs(slowSide)
+                    else:
+                        fastSide = math.fabs(slowSide) * -1.0
 
             if spinSign == 1.0:
                 leftSpeed = fastSide
@@ -173,7 +176,7 @@ class TankDriveTeleopDefaultNFS(Command):
                 leftSpeed = slowSide
                 rightSpeed = fastSide
         else:
-            # straight ahead
+            #straight ahead
             leftSpeed = rawThrottleSpeed
             rightSpeed = rawThrottleSpeed
 

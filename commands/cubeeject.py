@@ -15,10 +15,12 @@ class CubeEject(Command):
         self.setRunWhenDisabled(False)
 
     def execute(self):
-        subsystems.harvester.cubeinator3000.set(Relay.Value.kForward)
+        subsystems.harvester.cubeEjectLeft()
+        subsystems.harvester.cubeEjectRight()
 
     def isFinished(self):
         return False
 
     def interrupted(self):
-        subsystems.harvester.cubeinator3000.set(Relay.Value.kOff)
+        subsystems.harvester.cubeStopLeft()
+        subsystems.harvester.cubeStopRight()

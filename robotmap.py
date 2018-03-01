@@ -43,19 +43,6 @@ driveLine.rightEncBPort = 3
 driveLine.rightEncType = wpilib.Encoder.EncodingType.k4X
 driveLine.rightEncReverse = False
 
-"""
-minTimeFullThrottleChange
-The minimum amount of time that the tank drive will allow the motors to switch from -1.0 to +1.0
-Example: a value of 1 means that it will take 1 sec for the speed controllers to be updated from -1.0 to +1.0
-
-The maximum speed controller change per periodic call is thus 
-maxThrottleChange = totalThrottleRange (2) * callSpeed (0.02sec) / time (minTimeFullThrottleChange)
-
-0.02 = 50 times per second (the updated packets to the robot)
-"""
-driveLine.minTimeFullThrottleChange = 1.5
-driveLine.maxSpeedChange = (2 * 0.02) / driveLine.minTimeFullThrottleChange
-
 driveLine.controlStyle = "nfs"
 
 
@@ -123,9 +110,33 @@ driveLine.pidLargeDriveMaxSpeed = 0.5
 # ----------------------------------------------------------
 nfs = ConfigHolder()
 nfs.debugTurning = False
-nfs.lowTurnScale = 0.3              # reduce amount of turn when driving at slow speed, 0.3 = 70% reduction
-nfs.highTurnScale = 0.2             # reduce amount of turn when driving at high (normal) speed, 0.2 = 80% reduction
-nfs.slowDriveSpeedFactor = 0.7      # factor to reduce max speed in slow driving mode. 0.7 = 30% reduction (1.0 * 0.7)
+
+"""
+Turn scaling is used to reduce the maximum ammount of turn as the throttle increases to improve stability and
+make the feel closer to that of driving a car
+
+Heavy scalling is used while driving "slow", and lighter scaling is used during normal driving
+Thus:
+lowTurnScale -> normal driving
+highTurnScale -> "slow" driving (while holding left trigger)
+
+"""
+nfs.lowTurnScale = 0.3                  # How much to reduce turn speed when driving at full throttle at
+nfs.highTurnScale = 0.2
+nfs.slowDriveSpeedFactor = 0.7          # Max speed when driving in slow mode
+
+"""
+minTimeFullThrottleChange
+The minimum amount of time that the tank drive will allow the motors to switch from -1.0 to +1.0
+Example: a value of 1 means that it will take 1 sec for the speed controllers to be updated from -1.0 to +1.0
+
+The maximum speed controller change per periodic call is thus 
+maxThrottleChange = totalThrottleRange (2) * callSpeed (0.02sec) / time (minTimeFullThrottleChange)
+
+0.02 = 50 times per second (the updated packets to the robot
+"""
+nfs.minTimeFullThrottleChange = 1.5
+nfs.maxSpeedChange = (2 * 0.02) / nfs.minTimeFullThrottleChange
 
 
 # ----------------------------------------------------------
@@ -149,6 +160,9 @@ ultrasonics.frontLeftEchoPort = 13
 # Elevator Config (Stages 1 and 2)
 # ----------------------------------------------------------
 elevator = ConfigHolder()
+
+elevator.minTimeFullThrottleChange = 2
+elevator.maxSpeedChange = (2 * 0.02) / elevator.minTimeFullThrottleChange
 
 elevator.s1BottomLimitPort = 4              # digital input
 elevator.s1BottomLimitNormalClosed = False  # switch is wired to be normally cosed, so will return True when not tripped
@@ -191,13 +205,14 @@ elevator.s2AutoMoveDownSpeed = 0.25
 
 
 # ----------------------------------------------------------
-# Harvester (Stage 3)
+# Cubinator Harvester (Stage 3)
 # ----------------------------------------------------------
 harvester = ConfigHolder()
 harvester.rotationSpdPort = 5               # Rotation the cubinator3000 up and down
 harvester.rotationSpdReverse = False        # do we need to invert the speed controller
 harvester.rotationPotPort = 9               # analog input
-harvester.relayPort = 0                     # relay port
+harvester.relayPortLeft = 0                     # relay port
+harvester.relayPortRight = 1                     # relay port
 
 harvester.rotateUpSpeed = 0.3
 harvester.rotateDownSpeed = 0.2

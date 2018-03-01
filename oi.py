@@ -38,8 +38,11 @@ class ConfigHolder:
 config = ConfigHolder()
 
 # Driver Sticks
-config.leftDriverStickNullZone = 0.1
-config.rightDriverStickNullZone = 0.1
+config.leftDriverStickNullZone = 0.07
+config.rightDriverStickNullZone = 0.07
+
+config.throttleFilterPower = 0.4
+config.turnFilterPower = 0.4
 
 # Left Joystickc
 config.btnResetEncodersIndex = 2
@@ -58,14 +61,18 @@ config.goGamePadStickFilterFactor = 1.0     # for the FilterInput function
 
 config.axisElevator = 1
 config.axisClimber = 3
-config.btnElevatorMoveToBottomIndex = 5         # 5 = left bumper
-config.btnElevatorMoveToTopIndex = 6            # 6 = right bumper
-config.btnElevatorCalibrateHeightIndex = 8      # 8 = start
+#config.btnElevatorMoveToBottomIndex = 5         # 5 = left bumper
+#config.btnElevatorMoveToTopIndex = 6            # 6 = right bumper
+#config.btnElevatorCalibrateHeightIndex = 8      # 8 = start
 config.btnCrateLoadIndex = 1                    # 1 = A
 config.btnCrateEjectIndex = 4                   # 4 = Y
 config.btnCubeRotateUp = 3                      # 3 = X
 config.btnCubeRotateDown = 2                    # 2 = X
 
+config.axisCubeLoadLeft = 2                     # gamepad trigger
+config.axisCubeLoadRight = 3                    # gamepad trigger
+config.btnCubeEjectLeft = 5                     #
+config.btnCubeEjectRight = 6
 
 # ----------------------------------------------------------
 # Stick and Button Objects
@@ -76,15 +83,15 @@ rightDriverStick = None
 goGamePad = None
 resetYawBtn = None
 btnResetEncoders = None
+btnDriveSlow = None
 
 btnCrateLoad = None
 btnCrateEject = None
 btnCrateRotateUp = None
 btnCrateRotateDown = None
 
-btnElevatorCalibrateHeight = None
-btnElevatorMoveToTop = None
-btnElevatorMoveToBottom = None
+btnCubeEjectLeft = None
+btnCubeEjectRight = None
 
 # buttons for devmode
 
@@ -146,6 +153,9 @@ def init():
     btnResetEncoders = JoystickButton(leftDriverStick, config.btnResetEncodersIndex)
     btnResetEncoders.whenPressed(TankDriveResetEncoders())
 
+    global btnDriveSlow
+    btnDriveSlow = JoystickButton(leftDriverStick, 1)
+
     # ----------------------------------------------------------
     # GO Controls
     # ----------------------------------------------------------
@@ -153,8 +163,13 @@ def init():
     global btnCrateEject
     global btnCrateRotateUp
     global btnCrateRotateDown
+    global btnCubeEjectLeft
+    global btnCubeEjectRight
+
     btnCrateLoad = JoystickButton(goGamePad, config.btnCrateLoadIndex)
     btnCrateEject = JoystickButton(goGamePad, config.btnCrateEjectIndex)
+    btnCubeEjectLeft = JoystickButton(goGamePad, config.btnCubeEjectLeft)       # will be used in default command
+    btnCubeEjectRight = JoystickButton(goGamePad, config.btnCubeEjectLeft)      # will be used in default command
     btnCrateRotateUp = JoystickButton(goGamePad, config.btnCubeRotateUp)
     btnCrateRotateDown = JoystickButton(goGamePad, config.btnCubeRotateDown)
     btnCrateLoad.whileHeld(CubeGrab())
@@ -268,31 +283,42 @@ def init():
                                                steadyRate=robotmap.driveLine.pidLargeTurnSteady,
                                                scaleSpeed=robotmap.driveLine.pidLargeTurnScaleSpeed))
 
-
-    # if robotmap.devMode:
-    #    global btnElevatorCalibrateHeight
-    #    btnElevatorCalibrateHeight = JoystickButton(goGamePad, config.btnElevatorCalibrateHeightIndex)
-    #    btnElevatorCalibrateHeight.whenPressed(ElevatorCalibrateHeightReading())#
-
-    #   global btnElevatorMoveToBottom
-    #    btnElevatorMoveToBottom = JoystickButton(goGamePad, config.btnElevatorMoveToBottomIndex)
-    #    btnElevatorMoveToBottom.whenPressed(ElevatorMoveToBottom())
-
-    #    global btnElevatorMoveToTop
-    #    btnElevatorMoveToTop = JoystickButton(goGamePad, config.btnElevatorMoveToTopIndex)
-    #    btnElevatorMoveToTop.whenPressed(ElevatorMoveToTop())
-
-
 # ----------------------------------------------------------
 # Utility Functions
 # ----------------------------------------------------------
+
+# https://www.desmos.com/calculator/yopfm4gkno
+# power should be > 0.1 and less than 4 or 5 ish on the outside
+#    If power is < 1.0, the curve is a logrithmic curve to give more power closer to center
+#    Powers greater than one give a more traditional curve with less sensitivity near center
+def filterInputToPower(val, deadZone=0.0, power=2):
+    power = math.fabs(power)
+    if power < 0.1:
+        power = 0.1
+    if power > 5:
+        power = 5
+
+    sign = 1.0
+    if val < 0.0:
+        sign = -1.0
+
+    val = math.fabs(val)
+    deadZone = math.fabs(deadZone)
+
+    if val < deadZone:
+        val = 0.0
+    else:
+        val = val * ((val - deadZone) / (1 - deadZone))
+
+    output = val ** power
+    return output * sign
+
+
 # View output: https://www.desmos.com/calculator/uh8th7djep
 # to keep a straight line, scale = 0, and filterFactor = 1
 # Keep filterFactor between 0 and 1
 # Scale can go from 0 up, but values over 3-4 have dubious value
 # Nice curve for game pad is filterFactor = 0.2, scale=1.5
-
-
 def filterInput(val, deadZone=0.0, filterFactor=1.0, scale=0.0):
     """
     Filter an input using a curve that makes the stick less sensitive at low input values
