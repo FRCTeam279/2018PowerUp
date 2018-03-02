@@ -4,6 +4,7 @@ import robotmap
 from commands.cuberotatedown import CubeRotateDown
 from commands.delay import Delay
 from commands.elevatormovetovoltage import ElevatorMoveToVoltage
+from commands.navxresetyawangle import NavxResetYawAngle
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
 from commands.tankdriveturntoheading import TankDriveTurnToHeading
 
@@ -25,7 +26,7 @@ class AutoLoadScaleToLeft(CommandGroup):
         self.setInterruptible(True)
         self.setRunWhenDisabled(False)
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Starting"))
-
+        self.addSequential(NavxResetYawAngle())
         # 20' for testing... 20 * 12 = 240
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Drive Forward 240 inches"))
         self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 240,
@@ -43,7 +44,7 @@ class AutoLoadScaleToLeft(CommandGroup):
         self.addSequential(CubeRotateDown(), timeout=5)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Raise"))
-        self.addSequential(ElevatorMoveToVoltage(2.79),5)  #make sure we aren't interfering with switch
+        self.addSequential(ElevatorMoveToVoltage(2.79),8)  #make sure we aren't interfering with switch
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Move In"))
         # move in a bit more

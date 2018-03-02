@@ -1,6 +1,7 @@
 from wpilib.command import CommandGroup, PrintCommand
 
 import robotmap
+from commands.navxresetyawangle import NavxResetYawAngle
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
 
 
@@ -11,7 +12,7 @@ class AutoDriveForwardToSwitch(CommandGroup):
         self.setInterruptible(True)
         self.setRunWhenDisabled(False)
         self.addSequential(PrintCommand("CMD Group AutoDriveForwardToSwitch: Starting"))
-
+        self.addSequential(NavxResetYawAngle())
         self.addSequential(PrintCommand("CMD Group AutoDriveForwardToSwitch: Drive Forward 132 inches"))
         self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 132,
                                                       p=robotmap.driveLine.pidMedDriveP,

@@ -53,7 +53,7 @@ driveLine.pidSmallTurnP = 0.02
 driveLine.pidSmallTurnI = 0.00005
 driveLine.pidSmallTurnD = 0.0
 driveLine.pidSmallTurnTolerance = 3
-driveLine.pidSmallTurnMinSpeed = 0.35
+driveLine.pidSmallTurnMinSpeed = 0.38
 driveLine.pidSmallTurnScaleSpeed = 0.7
 driveLine.pidSmallTurnSamples = 5
 driveLine.pidSmallTurnSteady = 2
@@ -62,7 +62,7 @@ driveLine.pidMedTurnP = 0.02
 driveLine.pidMedTurnI = 0.000005
 driveLine.pidMedTurnD = 0.0
 driveLine.pidMedTurnTolerance = 3
-driveLine.pidMedTurnMinSpeed = 0.35
+driveLine.pidMedTurnMinSpeed = 0.38
 driveLine.pidMedTurnScaleSpeed = 0.7
 driveLine.pidMedTurnSamples = 5
 driveLine.pidMedTurnSteady = 2
@@ -161,7 +161,7 @@ ultrasonics.frontLeftEchoPort = 13
 # ----------------------------------------------------------
 elevator = ConfigHolder()
 
-elevator.minTimeFullThrottleChange = 2
+elevator.minTimeFullThrottleChange = 4
 elevator.maxSpeedChange = (2 * 0.02) / elevator.minTimeFullThrottleChange
 
 elevator.s1BottomLimitPort = 4              # digital input
@@ -190,7 +190,7 @@ elevator.s2ScaleSpeedDown = 0.7             # gravity assists
 elevator.s2MaxSpeedAtEdgeUp = 0.1           # Maximum speed we should be at when we impact end
 elevator.s2MaxSpeedAtEdgeDown = 0.1         # Maximum speed we should be at when we impact end
 elevator.s2DistanceToTopToStartSlow = 12    # how far away to start scaling speed down to max
-elevator.s2HoldingSpeed = 0.0              # Motor speed required to hold position - used in method #2
+elevator.s2HoldingSpeed = 0.05              # Motor speed required to hold position - used in method #2
 
 elevator.heightPotPort = 0                  # analog input
 elevator.heightVoltsPerInch = 0.0637        # change to calculated once min/max is measured
@@ -198,9 +198,9 @@ elevator.heightActualMinVolts = 0.004
 elevator.heightActualMaxVolts = 4.27
 elevator.heightMaxInches = 74               # Measure and record
 
-elevator.s1AutoMoveUpSpeed = 0.3                 # How fast to move when doing a move-to-height command
-elevator.s1AutoMoveDownSpeed = -0.25
-elevator.s2AutoMoveUpSpeed = 0.3
+elevator.s1AutoMoveUpSpeed = 0.35                 # How fast to move when doing a move-to-height command
+elevator.s1AutoMoveDownSpeed = -0.15
+elevator.s2AutoMoveUpSpeed = 0.4
 elevator.s2AutoMoveDownSpeed = -0.25
 
 
@@ -214,8 +214,8 @@ harvester.rotationPotPort = 9               # analog input
 harvester.relayPortLeft = 0                     # relay port
 harvester.relayPortRight = 1                     # relay port
 
-harvester.rotateUpSpeed = 0.3
-harvester.rotateDownSpeed = 0.2
+harvester.rotateUpSpeed = 0.4
+harvester.rotateDownSpeed = 0.3
 
 
 # ----------------------------------------------------------
