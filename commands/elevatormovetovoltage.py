@@ -39,11 +39,11 @@ class ElevatorMoveToVoltage(Command):
             return subsystems.elevator.getHeightVoltage() < self.targetVoltage
 
     def end(self):
-        subsystems.elevator.stopElevator()
+        subsystems.elevator.holdElevator()
         print("CMD ElevatorMoveToVoltage: Ended. target={}, current{}".format(self.targetVoltage, subsystems.elevator.getHeightVoltage()))
 
     def interrupted(self):
-        subsystems.elevator.stopElevator()
+        subsystems.elevator.holdElevator()
         print("CMD ElevatorMoveToVoltage: Interruptedtarget={}, current{}".format(self.targetVoltage, subsystems.elevator.getHeightVoltage()))
 
 

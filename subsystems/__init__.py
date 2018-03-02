@@ -9,6 +9,7 @@ from wpilib.robotbase import RobotBase
 from subsystems.climber import Climber
 from subsystems.elevator import Elevator
 from subsystems.elevatorr2 import ElevatorR2
+from subsystems.elevatorr3 import ElevatorR3
 from subsystems.harvester import Harvester
 from subsystems.ultrasonics import Ultrasonics
 from subsystems.tankdrive import TankDrive

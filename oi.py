@@ -227,74 +227,28 @@ def init():
         b5.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 100, p=0.0010, d=0.0, i=0.0, tolerance=100, minSpeed=0.35, maxSpeed=0.5))
         b6.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 150, p=0.0010, d=0.0, i=0.0, tolerance=100, minSpeed=0.35, maxSpeed=0.5))
 
-        #b1.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 80, p=0.0010, d=0.0, i=0.0, tolerance=50, minSpeed=0.35, maxSpeed=0.5))
-        #b2.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 100, p=0.0010, d=0.0, i=0.0, tolerance=50, minSpeed=0.35, maxSpeed=0.5))
-        #b3.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 150, p=0.0010, d=0.0, i=0.0, tolerance=75, minSpeed=0.35, maxSpeed=0.5))
-        #b4.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 175, p=0.0010, d=0.0, i=0.0, tolerance=75, minSpeed=0.35, maxSpeed=0.5))
-        #b5.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 200, p=0.0010, d=0.0, i=0.0, tolerance=75, minSpeed=0.35, maxSpeed=0.5))
-        #b6.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 250, p=0.0010, d=0.0, i=0.0, tolerance=75, minSpeed=0.35, maxSpeed=0.5))
-
         # turn testing
-        # target=0.0, p=0.0, i=0.0, d=0.0, tolerance=0.0, minSpeed=0.0, numSamples=4, steadyRate=2.0, scaleSpeed=0.5,
-        br1.whenPressed(TankDriveTurnToHeading(target=22.5,
-                                               p=robotmap.driveLine.pidSmallTurnP,
-                                               i=robotmap.driveLine.pidSmallTurnI,
-                                               d=robotmap.driveLine.pidSmallTurnD,
-                                               tolerance=robotmap.driveLine.pidSmallTurnTolerance,
-                                               minSpeed=robotmap.driveLine.pidSmallTurnMinSpeed,
-                                               numSamples=robotmap.driveLine.pidSmallTurnSamples,
-                                               steadyRate=robotmap.driveLine.pidSmallTurnSteady,
-                                               scaleSpeed=robotmap.driveLine.pidSmallTurnScaleSpeed))
+        #br1.whenPressed(TankDriveTurnToHeading(target=45, p=0.028, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.25, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        #br2.whenPressed(TankDriveTurnToHeading(target=45, p=0.030, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.25, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        #br3.whenPressed(TankDriveTurnToHeading(target=45, p=0.032, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.25, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        ##br4.whenPressed(TankDriveTurnToHeading(target=45, p=0.034, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.25, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        #br5.whenPressed(TankDriveTurnToHeading(target=45, p=0.036, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.25, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        #br6.whenPressed(TankDriveTurnToHeading(target=45, p=0.040, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.25, numSamples=5, steadyRate=2, scaleSpeed=0.7))
 
-        br1.whenPressed(TankDriveTurnToHeading(target=45,
-                                               p=robotmap.driveLine.pidSmallTurnP,
-                                               i=robotmap.driveLine.pidSmallTurnI,
-                                               d=robotmap.driveLine.pidSmallTurnD,
-                                               tolerance=robotmap.driveLine.pidSmallTurnTolerance,
-                                               minSpeed=robotmap.driveLine.pidSmallTurnMinSpeed,
-                                               numSamples=robotmap.driveLine.pidSmallTurnSamples,
-                                               steadyRate=robotmap.driveLine.pidSmallTurnSteady,
-                                               scaleSpeed=robotmap.driveLine.pidSmallTurnScaleSpeed))
+        br1.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.5, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        br2.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.55, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        br3.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.60, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        br4.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.65, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        br5.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.65, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        br6.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.65, numSamples=5, steadyRate=2, scaleSpeed=0.7))
 
-        br1.whenPressed(TankDriveTurnToHeading(target=60,
-                                               p=robotmap.driveLine.pidMedTurnP,
-                                               i=robotmap.driveLine.pidMedTurnI,
-                                               d=robotmap.driveLine.pidMedTurnD,
-                                               tolerance=robotmap.driveLine.pidMedTurnTolerance,
-                                               minSpeed=robotmap.driveLine.pidMedTurnMinSpeed,
-                                               numSamples=robotmap.driveLine.pidMedTurnSamples,
-                                               steadyRate=robotmap.driveLine.pidMedTurnSteady,
-                                               scaleSpeed=robotmap.driveLine.pidMedTurnScaleSpeed))
+        # br1.whenPressed(TankDriveTurnToHeading(target=45, p=0.022, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.40, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br2.whenPressed(TankDriveTurnToHeading(target=45, p=0.022, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.40, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br3.whenPressed(TankDriveTurnToHeading(target=45, p=0.022, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.40, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br4.whenPressed(TankDriveTurnToHeading(target=45, p=0.022, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.40, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br5.whenPressed(TankDriveTurnToHeading(target=45, p=0.022, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.40, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br6.whenPressed(TankDriveTurnToHeading(target=45, p=0.022, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.40, numSamples=5, steadyRate=2, scaleSpeed=0.7))
 
-        br1.whenPressed(TankDriveTurnToHeading(target=90,
-                                               p=robotmap.driveLine.pidLargeTurnP,
-                                               i=robotmap.driveLine.pidLargeTurnI,
-                                               d=robotmap.driveLine.pidLargeTurnD,
-                                               tolerance=robotmap.driveLine.pidLargeTurnTolerance,
-                                               minSpeed=robotmap.driveLine.pidLargeTurnMinSpeed,
-                                               numSamples=robotmap.driveLine.pidLargeTurnSamples,
-                                               steadyRate=robotmap.driveLine.pidLargeTurnSteady,
-                                               scaleSpeed=robotmap.driveLine.pidLargeTurnScaleSpeed))
-
-        br1.whenPressed(TankDriveTurnToHeading(target=120,
-                                               p=robotmap.driveLine.pidLargeTurnP,
-                                               i=robotmap.driveLine.pidLargeTurnI,
-                                               d=robotmap.driveLine.pidLargeTurnD,
-                                               tolerance=robotmap.driveLine.pidLargeTurnTolerance,
-                                               minSpeed=robotmap.driveLine.pidLargeTurnMinSpeed,
-                                               numSamples=robotmap.driveLine.pidLargeTurnSamples,
-                                               steadyRate=robotmap.driveLine.pidLargeTurnSteady,
-                                               scaleSpeed=robotmap.driveLine.pidLargeTurnScaleSpeed))
-
-        br1.whenPressed(TankDriveTurnToHeading(target=180,
-                                               p=robotmap.driveLine.pidLargeTurnP,
-                                               i=robotmap.driveLine.pidLargeTurnI,
-                                               d=robotmap.driveLine.pidLargeTurnD,
-                                               tolerance=robotmap.driveLine.pidLargeTurnTolerance,
-                                               minSpeed=robotmap.driveLine.pidLargeTurnMinSpeed,
-                                               numSamples=robotmap.driveLine.pidLargeTurnSamples,
-                                               steadyRate=robotmap.driveLine.pidLargeTurnSteady,
-                                               scaleSpeed=robotmap.driveLine.pidLargeTurnScaleSpeed))
 
 # ----------------------------------------------------------
 # Utility Functions

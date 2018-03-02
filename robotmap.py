@@ -49,7 +49,7 @@ driveLine.controlStyle = "nfs"
 # Small turns <60 deg
 # medium turns 60 - 90 deg
 # large turns  >90
-driveLine.pidSmallTurnP = 0.02
+driveLine.pidSmallTurnP = 0.04
 driveLine.pidSmallTurnI = 0.00005
 driveLine.pidSmallTurnD = 0.0
 driveLine.pidSmallTurnTolerance = 3
@@ -161,7 +161,7 @@ ultrasonics.frontLeftEchoPort = 13
 # ----------------------------------------------------------
 elevator = ConfigHolder()
 
-elevator.minTimeFullThrottleChange = 4
+elevator.minTimeFullThrottleChange = 1.0
 elevator.maxSpeedChange = (2 * 0.02) / elevator.minTimeFullThrottleChange
 
 elevator.s1BottomLimitPort = 4              # digital input

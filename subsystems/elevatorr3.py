@@ -6,23 +6,26 @@ import subsystems
 import robotmap
 from commands.elevatorteleoprun import ElevatorTeleopRun
 
+# R3 adds acceleration control (which was put in elevator.py but not tested there
 
-class Elevator(Subsystem):
+class ElevatorR3(Subsystem):
 
     def __init__(self):
-        print('Elevator: init called')
-        super().__init__('Elevator')
+        print('ElevatorR3: init called')
+        super().__init__('ElevatorR2')
         self.debug = False
-        self.logCounter = 0
+
         # self._heightPot = wpilib.AnalogInput(robotmap.elevator.heightPotPort)
 
         self._s1TopLimit = wpilib.DigitalInput(robotmap.elevator.s1TopLimitPort)
         self._s1BottomLimit = wpilib.DigitalInput(robotmap.elevator.s1BottomLimitPort)
         self._s1SpdController = wpilib.VictorSP(robotmap.elevator.s1SpdControllerPort)
+        self._s1SpdController.setInverted(robotmap.elevator.s1SpdControllerReverse)
 
         self._s2TopLimit = wpilib.DigitalInput(robotmap.elevator.s2TopLimitPort)
         self._s2BottomLimit = wpilib.DigitalInput(robotmap.elevator.s2BottomLimitPort)
         self._s2SpdController = wpilib.VictorSP(robotmap.elevator.s2SpdControllerPort)
+        self._s2SpdController.setInverted(robotmap.elevator.s2SpdControllerReverse)
 
         self._heightPot = wpilib.AnalogInput(robotmap.elevator.heightPotPort)
 
@@ -31,6 +34,7 @@ class Elevator(Subsystem):
 
     def initDefaultCommand(self):
         self.setDefaultCommand(ElevatorTeleopRun())
+
 
     # =================================================================================================================
     # Shared Functions
@@ -43,19 +47,10 @@ class Elevator(Subsystem):
         self._s2LastSpeedSet = 0.0
 
     def holdElevator(self):
-        if self.s1BottomLimit():
-            self._s1SpdController.set(0.0)
-            self._s1LastSpeedSet = 0.0
-        else:
-            self._s1SpdController.set(robotmap.elevator.s1HoldingSpeed)
-            self._s1LastSpeedSet = robotmap.elevator.s1HoldingSpeed
-
-        if self.s2BottomLimit():
-            self._s2SpdController.set(0.0)
-            self._s2LastSpeedSet = 0.0
-        else:
-            self._s2SpdController.set(robotmap.elevator.s2HoldingSpeed)
-            self._s2LastSpeedSet = robotmap.elevator.s2HoldingSpeed
+        self._s1SpdController.set(robotmap.elevator.s1HoldingSpeed)
+        self._s2SpdController.set(robotmap.elevator.s2HoldingSpeed)
+        self._s1LastSpeedSet = robotmap.elevator.s1HoldingSpeed
+        self._s2LastSpeedSet = robotmap.elevator.s2HoldingSpeed
 
     def getHeightInches(self):
         return self._heightPot.getAverageVoltage() * robotmap.elevator.heightVoltsPerInch
@@ -63,19 +58,36 @@ class Elevator(Subsystem):
     def getHeightVoltage(self):
         return self._heightPot.getAverageVoltage()
 
+    # avoid using this - seriously
     def rawMove(self, speed):
         self._s1SpdController.set(speed)
         self._s2SpdController.set(speed)
 
     # =================================================================================================================
-    # Approach One - Simple Movement
+    # Approach Two - Holding Speed
     # =================================================================================================================
-    # These methods are used to drive up or down solely based on the limit switches and desired speed
-    # All maintaining of height must be done by the driver
+    # These methods allow movement based on whether or not the limit switches at the extent of each assemble are
+    # are triggered.
+    # However, rather than have the baseline speed set at 0.0, it uses the "holding speed" for each stage as the
+    # baseline speed to go up for down from via the speed sent from the drivers joystick (or auto command).
+    # In theory, this means when the driver takes their hands off the stick, the elevator shouldn't move
+    # In reality, it will likely drift up or down depending on if there is a crate on it, or other factors that change
+    # the performance of the system.
+    # Example:
+    #   It is found that the second stage will hold steady if %10 power is applied to the motor
+    #   The driver wants to move the harvester down at %30 (based on his stick movement)
+    #   The actual speed sent to the speed controller is -%20
+    #               10% (holding speed) - 30% desired motion = 20% down power
     #
-    # Use the holding speed to set speed up for S1 and S2 if the top switch is triggered
+    # Adjust the holding speeds in the robotmap
 
     def move(self, s1Speed, s2Speed):
+        if s1Speed == 0.0:
+            s1Speed = robotmap.elevator.s1HoldingSpeed
+
+        if s2Speed == 0.0:
+            s2Speed = robotmap.elevator.s2HoldingSpeed
+
         self.s1Move(s1Speed)
         self.s2Move(s2Speed)
 
@@ -86,7 +98,7 @@ class Elevator(Subsystem):
             self.s1MoveDown(speed)
 
     def s2Move(self, speed):
-        if speed > 0.0:
+        if speed >= 0.0:
             self.s2MoveUp(speed)
         else:
             self.s2MoveDown(speed)
@@ -102,17 +114,19 @@ class Elevator(Subsystem):
         # If S1 happens to be in the middle (which should not be the case, but could happen...), use a holding speed
         if not self.s2TopLimit():
             if self.s1BottomLimit():
+                self._s1SpdController.set(0.0)
+                self._s1LastSpeedSet = 0.0
+
                 return
             else:
                 self._s1SpdController.set(robotmap.elevator.s1HoldingSpeed)
                 self._s1LastSpeedSet = robotmap.elevator.s1HoldingSpeed
+
                 return
 
-        # now for the actual movement since we know the harvester must be at the top if we reached this point
         if not self.s1TopLimit():
-            self.logCounter += 1
             speed = math.fabs(speed)
-            speed = robotmap.elevator.s1ScaleSpeedUp * speed
+            speed = robotmap.elevator.s1HoldingSpeed + (robotmap.elevator.s1ScaleSpeedUp * speed)
 
             speedDiff = self._s1LastSpeedSet - speed
             if math.fabs(speedDiff) > robotmap.elevator.maxSpeedChange:
@@ -120,21 +134,15 @@ class Elevator(Subsystem):
 
             self._s1SpdController.set(speed)
             self._s1LastSpeedSet = speed
-            if self.logCounter > 25:
-                print("s1MoveUp: s1TopLimit not set, speed = {}".format(speed))
+
         else:
-            # If we are already at the top.. just hold
             self._s1SpdController.set(robotmap.elevator.s1HoldingSpeed)
             self._s1LastSpeedSet = robotmap.elevator.s1HoldingSpeed
 
-        if self.logCounter > 25:
-            self.logCounter = 0
-
     def s1MoveDown(self, speed):
-        self.logCounter += 1
         if not self.s1BottomLimit():
             speed = math.fabs(speed)
-            speed = robotmap.elevator.s1ScaleSpeedDown * speed * -1.0
+            speed = robotmap.elevator.s1HoldingSpeed - (robotmap.elevator.s1ScaleSpeedDown * speed)
 
             speedDiff = self._s1LastSpeedSet - speed
             if math.fabs(speedDiff) > robotmap.elevator.maxSpeedChange:
@@ -142,14 +150,9 @@ class Elevator(Subsystem):
 
             self._s1SpdController.set(speed)
             self._s1LastSpeedSet = speed
-            if self.logCounter > 25:
-                print("s1MoveDOwn: BottomLimit not set, speed = {}".format(speed))
         else:
             self._s1SpdController.set(0.0)
             self._s1LastSpeedSet = 0.0
-
-        if self.logCounter > 25:
-            self.logCounter = 0
 
     def s1TopLimit(self):
         if robotmap.elevator.s1TopLimitNormalClosed:
@@ -169,7 +172,7 @@ class Elevator(Subsystem):
     def s2MoveUp(self, speed):
         if not self.s2TopLimit():
             speed = math.fabs(speed)
-            speed = robotmap.elevator.s2ScaleSpeedUp * speed
+            speed = robotmap.elevator.s2HoldingSpeed + (robotmap.elevator.s2ScaleSpeedUp * speed)
 
             speedDiff = self._s2LastSpeedSet - speed
             if math.fabs(speedDiff) > robotmap.elevator.maxSpeedChange:
@@ -178,11 +181,11 @@ class Elevator(Subsystem):
             self._s2SpdController.set(speed)
             self._s2LastSpeedSet = speed
         else:
-            # If we are already at the top.. just hold
-            self._s2SpdController.set(robotmap.elevator.s2HoldingSpeed)
+            self._s2SpdController.set(robotmap.elevator.s1HoldingSpeed)
             self._s2LastSpeedSet = robotmap.elevator.s2HoldingSpeed
 
     def s2MoveDown(self, speed):
+        # S1 should be drive down before S2
         # we only want to let the harvester move down if the middle stage is already all the way down
         # If S1 happens to be in the middle (which should not be the case, but could happen...), use a holding speed
         if not self.s1BottomLimit():
@@ -195,10 +198,9 @@ class Elevator(Subsystem):
                 self._s2LastSpeedSet = robotmap.elevator.s2HoldingSpeed
                 return
 
-        # and now the planned movement - S1 must already have been driven the middle assembly all the way down
         if not self.s2BottomLimit():
             speed = math.fabs(speed)
-            speed = robotmap.elevator.s2ScaleSpeedDown * speed * -1.0
+            speed = robotmap.elevator.s2HoldingSpeed - (robotmap.elevator.s2ScaleSpeedDown * speed)
 
             speedDiff = self._s2LastSpeedSet - speed
             if math.fabs(speedDiff) > robotmap.elevator.maxSpeedChange:

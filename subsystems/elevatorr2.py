@@ -28,6 +28,9 @@ class ElevatorR2(Subsystem):
 
         self._heightPot = wpilib.AnalogInput(robotmap.elevator.heightPotPort)
 
+        self._s1LastSpeedSet = 0.0
+        self._s2LastSpeedSet = 0.0
+
     def initDefaultCommand(self):
         self.setDefaultCommand(ElevatorTeleopRun())
 
@@ -39,6 +42,12 @@ class ElevatorR2(Subsystem):
     def stopElevator(self):
         self._s1SpdController.set(0.0)
         self._s2SpdController.set(0.0)
+
+    def holdElevator(self):
+        self._s1SpdController.set(robotmap.elevator.s1HoldingSpeed)
+        self._s2SpdController.set(robotmap.elevator.s2HoldingSpeed)
+        #self._s1LastSpeedSet = robotmap.elevator.s1HoldingSpeed
+        #self._s2LastSpeedSet = robotmap.elevator.s2HoldingSpeed
 
     def getHeightInches(self):
         return self._heightPot.getAverageVoltage() * robotmap.elevator.heightVoltsPerInch
@@ -111,6 +120,7 @@ class ElevatorR2(Subsystem):
         if not self.s1TopLimit():
             speed = math.fabs(speed)
             speed = robotmap.elevator.s1HoldingSpeed + (robotmap.elevator.s1ScaleSpeedUp * speed)
+
             self._s1SpdController.set(speed)
         else:
             self._s1SpdController.set(robotmap.elevator.s1HoldingSpeed)
