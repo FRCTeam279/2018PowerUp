@@ -1,3 +1,4 @@
+import math
 import wpilib
 from wpilib.command.subsystem import Subsystem
 
@@ -21,10 +22,12 @@ class Climber(Subsystem):
         self._spdController.set(0.0)
 
     def climbUp(self, speed):
+        speed = math.fabs(speed)
         self._spdController.set(speed)
 
-    def climbDown(self, speed):
-        self._spdController.set(speed)
+    #def climbDown(self, speed):
+    #    speed = math.fabs(speed)
+    #    self._spdController.set(speed)
 
     def initDefaultCommand(self):
         self.setDefaultCommand(ClimberTeleopRun())

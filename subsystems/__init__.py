@@ -43,6 +43,6 @@ def init():
     elevator = ElevatorR2()
     harvester = Harvester()
     ultrasonics = Ultrasonics()
-    # climber = Climber()
+    climber = Climber()
 
 

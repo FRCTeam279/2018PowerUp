@@ -25,7 +25,7 @@ class AutoLoadSwitchFromMid(CommandGroup):
 
 
         self.addParallel(PrintCommand("CMD Group AutoLoadSwitchFromMid: Cube Rotate part way level"))
-        self.addParallel(CubeRotateDown(), timeout=1.3)
+        self.addParallel(CubeRotateDown(), timeout=2)
 
         self.addParallel(PrintCommand("CMD Group AutoLoadSwitchFromMid: Raising elevator to 1.21V"))
         self.addParallel(ElevatorMoveToVoltage(1.21), 3)
@@ -65,7 +65,7 @@ class AutoLoadSwitchFromMid(CommandGroup):
                                        tolerance=robotmap.driveLine.pidSmallTurnTolerance,
                                        numSamples=robotmap.driveLine.pidSmallTurnSamples,
                                        steadyRate=robotmap.driveLine.pidSmallTurnSteady,
-                                       scaleSpeed=robotmap.driveLine.pidSmallTurnScaleSpeed), timeout=5)
+                                       scaleSpeed=robotmap.driveLine.pidSmallTurnScaleSpeed), timeout=4)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadSwitchFromMid: Delay"))
         self.addSequential(Delay(100))

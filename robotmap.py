@@ -53,7 +53,7 @@ driveLine.pidSmallTurnP = 0.02
 driveLine.pidSmallTurnI = 0.00005
 driveLine.pidSmallTurnD = 0.0
 driveLine.pidSmallTurnTolerance = 3
-driveLine.pidSmallTurnMinSpeed = 0.38
+driveLine.pidSmallTurnMinSpeed = 0.45
 driveLine.pidSmallTurnScaleSpeed = 0.7
 driveLine.pidSmallTurnSamples = 5
 driveLine.pidSmallTurnSteady = 2
@@ -214,8 +214,8 @@ harvester.rotationPotPort = 9               # analog input
 harvester.relayPortLeft = 0                     # relay port
 harvester.relayPortRight = 1                     # relay port
 
-harvester.rotateUpSpeed = 0.4
-harvester.rotateDownSpeed = 0.3
+harvester.rotateUpSpeed = 0.35
+harvester.rotateDownSpeed = 0.25
 
 
 # ----------------------------------------------------------

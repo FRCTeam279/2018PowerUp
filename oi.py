@@ -45,9 +45,11 @@ config.throttleFilterPower = 0.4
 config.turnFilterPower = 0.4
 
 # Left Joystickc
+config.btnDriveSlow = 1
 config.btnResetEncodersIndex = 2
 
 # Right Joystick
+config.btnDriverAllowClimb = 1
 config.btnResetYawAngleIndex = 2
 
 
@@ -60,7 +62,7 @@ config.goGamePadStickFilterFactor = 1.0     # for the FilterInput function
 
 
 config.axisElevator = 1
-config.axisClimber = 3
+config.axisClimber = 5
 #config.btnElevatorMoveToBottomIndex = 5         # 5 = left bumper
 #config.btnElevatorMoveToTopIndex = 6            # 6 = right bumper
 #config.btnElevatorCalibrateHeightIndex = 8      # 8 = start
@@ -74,6 +76,9 @@ config.axisCubeLoadRight = 3                    # gamepad trigger
 config.btnCubeEjectLeft = 5                     #
 config.btnCubeEjectRight = 6
 
+config.btnGOAllowClimb = 7
+
+
 # ----------------------------------------------------------
 # Stick and Button Objects
 # ----------------------------------------------------------
@@ -84,6 +89,8 @@ goGamePad = None
 resetYawBtn = None
 btnResetEncoders = None
 btnDriveSlow = None
+btnDriverAllowClimb = None
+btnGOAllowClimb = None
 
 btnCrateLoad = None
 btnCrateEject = None
@@ -154,7 +161,13 @@ def init():
     btnResetEncoders.whenPressed(TankDriveResetEncoders())
 
     global btnDriveSlow
-    btnDriveSlow = JoystickButton(leftDriverStick, 1)
+    btnDriveSlow = JoystickButton(leftDriverStick, config.btnDriveSlow)
+
+    global btnDriverAllowClimb
+    btnDriverAllowClimb = JoystickButton(rightDriverStick, config.btnDriverAllowClimb)
+
+    global btnGOAllowClimb
+    btnGOAllowClimb = JoystickButton(goGamePad, config.btnGOAllowClimb)
 
     # ----------------------------------------------------------
     # GO Controls
