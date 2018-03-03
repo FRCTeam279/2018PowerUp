@@ -32,7 +32,7 @@ class AutoLoadSwitchToLeftFromSide(CommandGroup):
         self.addSequential(NavxResetYawAngle())
 
         self.addParallel(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Rotate part way level"))
-        self.addParallel(CubeRotateDown(), timeout=21.3)
+        self.addParallel(CubeRotateDown(), timeout=2.25)
 
         self.addParallel(PrintCommand("CMD Group AutoLoadSwitchToLeftFromSide: Raising elevator to 1.21V"))
         self.addParallel(ElevatorMoveToVoltage(1.21), 6)
@@ -69,7 +69,7 @@ class AutoLoadSwitchToLeftFromSide(CommandGroup):
                                                       d=robotmap.driveLine.pidSmallDriveD,
                                                       tolerance=robotmap.driveLine.pidSmallDriveTolerance,
                                                       minSpeed=robotmap.driveLine.pidSmallDriveMinSpeed,
-                                                      maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=2)
+                                                      maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=2.5)
 
         # self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Rotate Down"))
         # self.addSequential(CubeRotateDown(), timeout=2.5)
