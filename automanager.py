@@ -82,7 +82,8 @@ class AutoManager:
             if self.getPreferredElement() == 2 and scaleSide=='L':      # = 'scale'
                 print("AutoManager.GetAction: AutoLoadScaleToLeft - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(
                         self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
-                return AutoLoadScaleToLeft()
+                #return AutoLoadScaleToLeft()
+                return AutoDriveForwardToSwitch()
 
             # Fall back number 1 - the other element
             # if the preferred element isn't on this side
@@ -96,7 +97,8 @@ class AutoManager:
                 if scaleSide == 'L':
                     print("AutoManager.GetAction: AutoLoadScaleToLeft - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(
                             self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
-                    return AutoLoadScaleToLeft()
+                    #return AutoLoadScaleToLeft()
+                    return AutoDriveForwardToSwitch()
 
         # ---------------------------------------------
         # Left Starting Spot
@@ -115,7 +117,8 @@ class AutoManager:
             if self.getPreferredElement() == 2 and scaleSide=='R':          # 2 = 'scale'
                 print("AutoManager.GetAction: AutoLoadScaleToRight - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(
                         self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
-                return AutoLoadScaleToRight()
+                #return AutoLoadScaleToRight()
+                return AutoDriveForwardToSwitch()
 
             # Fall back number 1 - the other element
             # if the preferred element isn't on this side
@@ -129,7 +132,8 @@ class AutoManager:
                 if scaleSide == 'R':
                     print("AutoManager.GetAction: AutoLoadScaleToRight - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(
                             self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
-                    return AutoLoadScaleToRight()
+                    #return AutoLoadScaleToRight()
+                    return AutoDriveForwardToSwitch()
 
         # ---------------------------------------------
         # Fall back number 2 - cross the line

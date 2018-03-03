@@ -62,8 +62,6 @@ class TankPIDTurn(PIDSource, PIDOutput):
             subsystems.driveline.driveRaw(-raw, raw)
 
 
-
-
 class TankDrive(Subsystem):
 
     def __init__(self):

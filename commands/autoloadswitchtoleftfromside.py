@@ -30,20 +30,21 @@ class AutoLoadSwitchToLeftFromSide(CommandGroup):
 
         self.addSequential(PrintCommand("CMD Group AutoLoadSwitchToLeftFromSide: Starting"))
         self.addSequential(NavxResetYawAngle())
-        self.addSequential(PrintCommand("CMD Group AutoLoadSwitchToLeftFromSide: Drive forward 132 inches"))
-        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 132,
-                                                      p=robotmap.driveLine.pidMedDriveP,
-                                                      i=robotmap.driveLine.pidMedDriveI,
-                                                      d=robotmap.driveLine.pidMedDriveD,
-                                                      tolerance=robotmap.driveLine.pidMedDriveTolerance,
-                                                      minSpeed=robotmap.driveLine.pidMedDriveMinSpeed,
-                                                      maxSpeed=robotmap.driveLine.pidMedDriveMaxSpeed), timeout=5)
 
         self.addParallel(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Rotate part way level"))
         self.addParallel(CubeRotateDown(), timeout=21.3)
 
         self.addParallel(PrintCommand("CMD Group AutoLoadSwitchToLeftFromSide: Raising elevator to 1.21V"))
         self.addParallel(ElevatorMoveToVoltage(1.21), 6)
+
+        self.addSequential(PrintCommand("CMD Group AutoLoadSwitchToLeftFromSide: Drive forward 138 inches"))
+        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 138,
+                                                      p=robotmap.driveLine.pidMedDriveP,
+                                                      i=robotmap.driveLine.pidMedDriveI,
+                                                      d=robotmap.driveLine.pidMedDriveD,
+                                                      tolerance=robotmap.driveLine.pidMedDriveTolerance,
+                                                      minSpeed=robotmap.driveLine.pidMedDriveMinSpeed,
+                                                      maxSpeed=robotmap.driveLine.pidMedDriveMaxSpeed), timeout=5)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadSwitchToLeftFromSide: Delay"))
         self.addSequential(Delay(250))
@@ -57,12 +58,12 @@ class AutoLoadSwitchToLeftFromSide(CommandGroup):
                                                   tolerance=robotmap.driveLine.pidMedTurnTolerance,
                                                   numSamples=robotmap.driveLine.pidMedTurnSamples,
                                                   steadyRate=robotmap.driveLine.pidMedTurnSteady,
-                                                  scaleSpeed=robotmap.driveLine.pidMedTurnScaleSpeed), timeout=5)
+                                                  scaleSpeed=robotmap.driveLine.pidMedTurnScaleSpeed), timeout=4)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Move In"))
         # TODO - drive to ultrasonic distance ?
         #self.addSequential(TankDriveMinEncoderDistance(target=robotmap.driveLine.inchesPerTick * 20, speed=0.4), timeout=3)
-        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 26,
+        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 30,
                                                       p=robotmap.driveLine.pidSmallDriveP,
                                                       i=robotmap.driveLine.pidSmallDriveI,
                                                       d=robotmap.driveLine.pidSmallDriveD,

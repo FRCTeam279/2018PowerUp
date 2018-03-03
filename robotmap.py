@@ -49,20 +49,20 @@ driveLine.controlStyle = "nfs"
 # Small turns <60 deg
 # medium turns 60 - 90 deg
 # large turns  >90
-driveLine.pidSmallTurnP = 0.04
+driveLine.pidSmallTurnP = 0.032
 driveLine.pidSmallTurnI = 0.00005
 driveLine.pidSmallTurnD = 0.0
 driveLine.pidSmallTurnTolerance = 3
-driveLine.pidSmallTurnMinSpeed = 0.45
+driveLine.pidSmallTurnMinSpeed = 0.43
 driveLine.pidSmallTurnScaleSpeed = 0.7
 driveLine.pidSmallTurnSamples = 5
 driveLine.pidSmallTurnSteady = 2
 
-driveLine.pidMedTurnP = 0.02
+driveLine.pidMedTurnP = 0.022
 driveLine.pidMedTurnI = 0.000005
 driveLine.pidMedTurnD = 0.0
 driveLine.pidMedTurnTolerance = 3
-driveLine.pidMedTurnMinSpeed = 0.38
+driveLine.pidMedTurnMinSpeed = 0.40
 driveLine.pidMedTurnScaleSpeed = 0.7
 driveLine.pidMedTurnSamples = 5
 driveLine.pidMedTurnSteady = 2
@@ -214,8 +214,8 @@ harvester.rotationPotPort = 9               # analog input
 harvester.relayPortLeft = 0                     # relay port
 harvester.relayPortRight = 1                     # relay port
 
-harvester.rotateUpSpeed = 0.35
-harvester.rotateDownSpeed = 0.25
+harvester.rotateUpSpeed = 0.6
+harvester.rotateDownSpeed = 0.6
 
 
 # ----------------------------------------------------------
