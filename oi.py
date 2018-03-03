@@ -220,12 +220,12 @@ def init():
         br6 = JoystickButton(rightDriverStick, 10)
 
         # forward testing
-        b1.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 24, p=0.002, d=0.0, i=0.0, tolerance=15, minSpeed=0.45, maxSpeed=1.0))
-        b2.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 36, p=0.0016, d=0.0, i=0.0, tolerance=15, minSpeed=0.45, maxSpeed=1.0))
-        b3.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 48, p=0.0014, d=0.0, i=0.0, tolerance=50, minSpeed=0.35, maxSpeed=0.7))
-        b4.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 56, p=0.0014, d=0.0, i=0.0, tolerance=50, minSpeed=0.35, maxSpeed=0.7))
-        b5.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 100, p=0.0010, d=0.0, i=0.0, tolerance=100, minSpeed=0.35, maxSpeed=0.5))
-        b6.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 150, p=0.0010, d=0.0, i=0.0, tolerance=100, minSpeed=0.35, maxSpeed=0.5))
+        # b1.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 24, p=0.002, d=0.0, i=0.0, tolerance=15, minSpeed=0.45, maxSpeed=1.0))
+        # b2.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 36, p=0.0016, d=0.0, i=0.0, tolerance=15, minSpeed=0.45, maxSpeed=1.0))
+        # b3.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 48, p=0.0014, d=0.0, i=0.0, tolerance=50, minSpeed=0.35, maxSpeed=0.7))
+        # b4.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 56, p=0.0014, d=0.0, i=0.0, tolerance=50, minSpeed=0.35, maxSpeed=0.7))
+        # b5.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 100, p=0.0010, d=0.0, i=0.0, tolerance=100, minSpeed=0.35, maxSpeed=0.5))
+        # b6.whenPressed(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 150, p=0.0010, d=0.0, i=0.0, tolerance=100, minSpeed=0.35, maxSpeed=0.5))
 
         # turn testing
         #br1.whenPressed(TankDriveTurnToHeading(target=45, p=0.028, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.25, numSamples=5, steadyRate=2, scaleSpeed=0.7))
@@ -235,12 +235,12 @@ def init():
         #br5.whenPressed(TankDriveTurnToHeading(target=45, p=0.036, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.25, numSamples=5, steadyRate=2, scaleSpeed=0.7))
         #br6.whenPressed(TankDriveTurnToHeading(target=45, p=0.040, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.25, numSamples=5, steadyRate=2, scaleSpeed=0.7))
 
-        br1.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.5, numSamples=5, steadyRate=2, scaleSpeed=0.7))
-        br2.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.55, numSamples=5, steadyRate=2, scaleSpeed=0.7))
-        br3.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.60, numSamples=5, steadyRate=2, scaleSpeed=0.7))
-        br4.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.65, numSamples=5, steadyRate=2, scaleSpeed=0.7))
-        br5.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.65, numSamples=5, steadyRate=2, scaleSpeed=0.7))
-        br6.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.65, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br1.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.5, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br2.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.55, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br3.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.60, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br4.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.65, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br5.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.65, numSamples=5, steadyRate=2, scaleSpeed=0.7))
+        # br6.whenPressed(TankDriveTurnToHeading(target=45, p=0.04, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.65, numSamples=5, steadyRate=2, scaleSpeed=0.7))
 
         # br1.whenPressed(TankDriveTurnToHeading(target=45, p=0.022, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.40, numSamples=5, steadyRate=2, scaleSpeed=0.7))
         # br2.whenPressed(TankDriveTurnToHeading(target=45, p=0.022, i=0.00005, d=0.0, tolerance=3.0, minSpeed=0.40, numSamples=5, steadyRate=2, scaleSpeed=0.7))

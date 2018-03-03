@@ -25,7 +25,7 @@ class AutoLoadSwitchFromMid(CommandGroup):
 
 
         self.addParallel(PrintCommand("CMD Group AutoLoadSwitchFromMid: Cube Rotate part way level"))
-        self.addParallel(CubeRotateDown(), timeout=2)
+        self.addParallel(CubeRotateDown(), timeout=2.5)
 
         self.addParallel(PrintCommand("CMD Group AutoLoadSwitchFromMid: Raising elevator to 1.21V"))
         self.addParallel(ElevatorMoveToVoltage(1.21), 3)
@@ -72,7 +72,7 @@ class AutoLoadSwitchFromMid(CommandGroup):
         if side == 'L':  # angle to left, then right and unload
             self.addSequential(PrintCommand("CMD Group AutoLoadSwitchFromMid: Drive Forward Left"))
             # self.addSequential(TankDriveMinEncoderDistance(target=robotmap.driveLine.inchesPerTick * 36, speed=0.4), timeout=4)
-            self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 75,
+            self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 58,
                                                           p=robotmap.driveLine.pidSmallDriveP,
                                                           i=robotmap.driveLine.pidSmallDriveI,
                                                           d=robotmap.driveLine.pidSmallDriveD,
@@ -82,7 +82,7 @@ class AutoLoadSwitchFromMid(CommandGroup):
         else:
             self.addSequential(PrintCommand("CMD Group AutoLoadSwitchFromMid: Drive Forward Right"))
             # self.addSequential(TankDriveMinEncoderDistance(target=robotmap.driveLine.inchesPerTick * 36, speed=0.4), timeout=4)
-            self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 62,
+            self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 56,
                                                           p=robotmap.driveLine.pidSmallDriveP,
                                                           i=robotmap.driveLine.pidSmallDriveI,
                                                           d=robotmap.driveLine.pidSmallDriveD,
@@ -112,13 +112,16 @@ class AutoLoadSwitchFromMid(CommandGroup):
         # TODO - try with ultrasonics
         self.addSequential(PrintCommand("CMD Group AutoLoadSwitchFromMid: Drive Forward to wall"))
         # self.addSequential(TankDriveMinEncoderDistance(target=robotmap.driveLine.inchesPerTick * 24, speed=0.4), timeout=3)
-        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 36,
+        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 42,
                                                       p=robotmap.driveLine.pidSmallDriveP,
                                                       i=robotmap.driveLine.pidSmallDriveI,
                                                       d=robotmap.driveLine.pidSmallDriveD,
                                                       tolerance=robotmap.driveLine.pidSmallDriveTolerance,
                                                       minSpeed=robotmap.driveLine.pidSmallDriveMinSpeed,
-                                                      maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=3)
+                                                      maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=3.5)
+
+        self.addSequential(PrintCommand("CMD Group AutoLoadSwitchFromMid: Delay"))
+        self.addSequential(Delay(250))
 
         if side == 'L' or side == 'R':
             # self.addSequential(CubeRotateDown(), timeout=2.5)     -- not needed
