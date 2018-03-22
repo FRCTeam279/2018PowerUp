@@ -6,6 +6,7 @@ from commands.delay import Delay
 from commands.elevatormovetovoltage import ElevatorMoveToVoltage
 from commands.navxresetyawangle import NavxResetYawAngle
 from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
+from commands.tankdrivetoencoderdistanceonheading import TankDriveToEncoderDistanceOnHeading
 from commands.tankdriveturntoheading import TankDriveTurnToHeading
 
 # The side of the switch that is ours is on the left, and we will load it from the far left side starting
@@ -29,19 +30,20 @@ class AutoLoadScaleToLeft(CommandGroup):
         self.addSequential(NavxResetYawAngle())
         # 20' for testing... 20 * 12 = 240
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Drive Forward 240 inches"))
-        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 240,
+        self.addSequential(TankDriveToEncoderDistanceOnHeading(target=robotmap.driveLine.ticksPerInch * 240,
                                                       p=robotmap.driveLine.pidLargeDriveP,
                                                       i=robotmap.driveLine.pidLargeDriveI,
                                                       d=robotmap.driveLine.pidLargeDriveD,
                                                       tolerance=robotmap.driveLine.pidLargeDriveTolerance,
                                                       minSpeed=robotmap.driveLine.pidLargeDriveMinSpeed,
-                                                      maxSpeed=robotmap.driveLine.pidLargeDriveMaxSpeed), timeout=5)
+                                                      maxSpeed=robotmap.driveLine.pidLargeDriveMaxSpeed,
+                                                      headingP=0.025), timeout=5)
 
         # TODO - do we need to rotate in a bit?
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Rotate in"))
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Rotate Level"))
-        self.addSequential(CubeRotateDown(), timeout=5)
+        self.addSequential(CubeRotateDown(), timeout=2.5)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToLeft: Cube Raise"))
         self.addSequential(ElevatorMoveToVoltage(2.79),8)  #make sure we aren't interfering with switch

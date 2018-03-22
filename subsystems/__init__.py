@@ -10,6 +10,7 @@ from subsystems.climber import Climber
 from subsystems.elevator import Elevator
 from subsystems.elevatorr2 import ElevatorR2
 from subsystems.elevatorr3 import ElevatorR3
+from subsystems.elevatorr4 import ElevatorR4
 from subsystems.harvester import Harvester
 from subsystems.ultrasonics import Ultrasonics
 from subsystems.tankdrive import TankDrive
@@ -41,7 +42,7 @@ def init():
         raise RuntimeError('Subsystems have already been initialized')
 
     driveline = TankDrive()
-    elevator = ElevatorR2()
+    elevator = ElevatorR4()
     harvester = Harvester()
     ultrasonics = Ultrasonics()
     climber = Climber()

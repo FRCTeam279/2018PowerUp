@@ -35,6 +35,34 @@ class TankPID(PIDSource, PIDOutput):
             subsystems.driveline.driveRaw(output, output)
 
 
+class TankPIDIndirect(PIDSource, PIDOutput):
+
+    def __init__(self, minSpeed=0.0):
+        self.minSpeed = minSpeed
+        self._output = 0.0
+
+    def getPIDSourceType(self):
+        return wpilib.pidcontroller.PIDController.PIDSourceType.kDisplacement
+
+    def setPIDSourceType(self, pidSource):
+        pass
+
+    def pidGet(self):
+        return subsystems.driveline.getPIDEncoderCount()
+
+    def pidWrite(self, output):
+        if math.fabs(output) < self.minSpeed:
+            if output < 0.0:
+                self._output = -1.0 * self.minSpeed
+            else:
+                self._output = self.minSpeed
+        else:
+            self._output = output
+
+    def getOutput(self):
+        return self._output
+
+
 class TankPIDTurn(PIDSource, PIDOutput):
 
     def __init__(self, minSpeed, scaleSpeed):
@@ -134,9 +162,12 @@ class TankDrive(Subsystem):
         # PID Setup
         self.tankPID = TankPID()
         self.pidController = PIDController(0.0, 0.0, 0.0, self.tankPID, self.tankPID)
+        self.tankPIDIndirect = TankPIDIndirect()
+        self.pidControllerIndirect = PIDController(0.0, 0.0, 0.0, self.tankPIDIndirect, self.tankPIDIndirect)
 
         self.turnPID = TankPIDTurn(0.0, 0.5)
         self.pidTurnController = PIDController(0.0, 0.0, 0.0, self.turnPID, self.turnPID)
+
 
     # ------------------------------------------------------------------------------------------------------------------
     def initDefaultCommand(self):
@@ -155,7 +186,7 @@ class TankDrive(Subsystem):
                 self.rightSpdCtrl.set(0.0)
         else:
             if self.leftSpdCtrl:
-                self.leftSpdCtrl.set(left)
+                self.leftSpdCtrl.set(left - 0.05)
             if self.rightSpdCtrl:
                 self.rightSpdCtrl.set(right)
 
