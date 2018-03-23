@@ -2,7 +2,7 @@ from wpilib.command import CommandGroup, PrintCommand
 
 import robotmap
 from commands.navxresetyawangle import NavxResetYawAngle
-from commands.tankdrivetoencoderdistance import TankDriveToEncoderDistance
+from commands.tankdrivetoencoderdistanceonheading import TankDriveToEncoderDistanceOnHeading
 
 
 class AutoDriveForwardToScale(CommandGroup):
@@ -14,13 +14,14 @@ class AutoDriveForwardToScale(CommandGroup):
         self.addSequential(PrintCommand("CMD Group AutoDriveForwardToScale: Starting"))
         self.addSequential(NavxResetYawAngle())
         self.addSequential(PrintCommand("CMD Group AutoDriveForwardToScale: Drive Forward 250 inches"))
-        self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 250,
-                                                      p=robotmap.driveLine.pidLargeDriveP,
-                                                      i=robotmap.driveLine.pidLargeDriveI,
-                                                      d=robotmap.driveLine.pidLargeDriveD,
-                                                      tolerance=robotmap.driveLine.pidLargeDriveTolerance,
-                                                      minSpeed=robotmap.driveLine.pidLargeDriveMinSpeed,
-                                                      maxSpeed=robotmap.driveLine.pidLargeDriveMaxSpeed), timeout=6)
+        self.addSequential(TankDriveToEncoderDistanceOnHeading(target=robotmap.driveLine.ticksPerInch * 240,
+                                                               p=robotmap.driveLine.pidLargeDriveP,
+                                                               i=robotmap.driveLine.pidLargeDriveI,
+                                                               d=robotmap.driveLine.pidLargeDriveD,
+                                                               tolerance=robotmap.driveLine.pidLargeDriveTolerance,
+                                                               minSpeed=robotmap.driveLine.pidLargeDriveMinSpeed,
+                                                               maxSpeed=robotmap.driveLine.pidLargeDriveMaxSpeed,
+                                                               headingP=0.03), timeout=5)
 
         self.addSequential(PrintCommand("CMD Group AutoDriveForwardToScale: Finished"))
 
