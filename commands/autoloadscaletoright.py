@@ -38,7 +38,11 @@ class AutoLoadScaleToRight(CommandGroup):
                                                       minSpeed=robotmap.driveLine.pidLargeDriveMinSpeed,
                                                       maxSpeed=robotmap.driveLine.pidLargeDriveMaxSpeed,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                                                       headingP=0.025), timeout=5)
+=======
+                                                      headingP=0.03), timeout=5)
+>>>>>>> Stashed changes
 =======
                                                       headingP=0.03), timeout=5)
 >>>>>>> Stashed changes
