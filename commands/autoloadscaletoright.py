@@ -38,7 +38,7 @@ class AutoLoadScaleToRight(CommandGroup):
                                                       minSpeed=robotmap.driveLine.pidLargeDriveMinSpeed,
                                                       maxSpeed=robotmap.driveLine.pidLargeDriveMaxSpeed,
                                                       headingP=0.03), timeout=5)
-        
+
         # TODO - do we need to rotate in a bit?
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToRight: Rotate in"))
 
