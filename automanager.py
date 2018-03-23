@@ -37,7 +37,6 @@ class AutoManager:
         self.preferredElement.addObject('crossLine', 0)
         self.preferredElement.addObject('switch', 1)
         self.preferredElement.addObject('scale', 2)
-        self.preferredElement.addObject('switch only no scale', 3)
 
         self.startingPosition = wpilib.SendableChooser()
         self.startingPosition.addObject('left', 0)
@@ -86,13 +85,6 @@ class AutoManager:
                 return AutoLoadScaleToLeft()
                 #return AutoDriveForwardToSwitch()
 
-            if self.getPreferredElement() == 3 and nearSwitchSide=='L':  # = 'scale'
-                print(
-                    "AutoManager.GetAction: AutoLoadSwitchToLeftFromSide - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(
-                        self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
-                # return AutoLoadScaleToLeft()
-                return AutoLoadSwitchToLeftFromSide()
-
             # Fall back number 1 - the other element
             # if the preferred element isn't on this side
             #  return either of the others if they are...
@@ -105,16 +97,11 @@ class AutoManager:
                 if scaleSide == 'L':
                     print("AutoManager.GetAction: AutoLoadScaleToLeft - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(
                             self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
-                    #return AutoLoadScaleToLeft()
-                    return AutoDriveForwardToSwitch()
-            if self.getPreferredElement() == 3 and nearSwitchSide != 'L':
-                print(
-                    "AutoManager.GetAction: AutoLoadScaleToLeft - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(
-                        self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
-                return AutoDriveForwardToSwitch()
+                    return AutoLoadScaleToLeft()
+                    #return AutoDriveForwardToSwitch()
 
         # ---------------------------------------------
-        # Right Starting Spot
+        # Left Starting Spot
         # ---------------------------------------------
         if self.getStartingPosition() == 2:     # 2= 'right'
             if self.getPreferredElement() == 0:        # 0 = 'crossLine'
@@ -133,11 +120,6 @@ class AutoManager:
                 return AutoLoadScaleToRight()
                 #return AutoDriveForwardToSwitch()
 
-            if self.getPreferredElement() == 3 and nearSwitchSide=='R':          # 3 = 'switch only no scale'
-                print("AutoManager.GetAction: AutoLoadSwitchToRightFromSide - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(
-                        self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
-                return AutoLoadSwitchToRightFromSide()
-
             # Fall back number 1 - the other element
             # if the preferred element isn't on this side
             #  return either of the others if they are...
@@ -152,11 +134,6 @@ class AutoManager:
                             self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
                     return AutoLoadScaleToRight()
                     #return AutoDriveForwardToSwitch()
-            if self.getPreferredElement() == 3 and nearSwitchSide != 'R':
-                print(
-                    "AutoManager.GetAction: AutoDriveForward - Preferred={}, Starting={}, NearSwitch={}, Scale={}".format(
-                        self.getPreferredElement(), self.getStartingPosition(), nearSwitchSide, scaleSide))
-                return AutoDriveForwardToSwitch()
 
         # ---------------------------------------------
         # Fall back number 2 - cross the line
