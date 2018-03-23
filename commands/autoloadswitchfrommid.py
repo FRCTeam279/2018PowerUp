@@ -72,7 +72,7 @@ class AutoLoadSwitchFromMid(CommandGroup):
         if side == 'L':  # angle to left, then right and unload
             self.addSequential(PrintCommand("CMD Group AutoLoadSwitchFromMid: Drive Forward Left"))
             # self.addSequential(TankDriveMinEncoderDistance(target=robotmap.driveLine.inchesPerTick * 36, speed=0.4), timeout=4)
-            self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 82,
+            self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 72,
                                                           p=robotmap.driveLine.pidSmallDriveP,
                                                           i=robotmap.driveLine.pidSmallDriveI,
                                                           d=robotmap.driveLine.pidSmallDriveD,
@@ -119,7 +119,7 @@ class AutoLoadSwitchFromMid(CommandGroup):
                                                           d=robotmap.driveLine.pidSmallDriveD,
                                                           tolerance=robotmap.driveLine.pidSmallDriveTolerance,
                                                           minSpeed=robotmap.driveLine.pidSmallDriveMinSpeed,
-                                                          maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=3.5)
+                                                          maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=2.5)
         else:
             # self.addSequential(TankDriveMinEncoderDistance(target=robotmap.driveLine.inchesPerTick * 24, speed=0.4), timeout=3)
             self.addSequential(TankDriveToEncoderDistance(target=robotmap.driveLine.ticksPerInch * 50,
@@ -128,7 +128,7 @@ class AutoLoadSwitchFromMid(CommandGroup):
                                                           d=robotmap.driveLine.pidSmallDriveD,
                                                           tolerance=robotmap.driveLine.pidSmallDriveTolerance,
                                                           minSpeed=robotmap.driveLine.pidSmallDriveMinSpeed,
-                                                          maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=3.5)
+                                                          maxSpeed=robotmap.driveLine.pidSmallDriveMaxSpeed), timeout=3.0)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadSwitchFromMid: Delay"))
         self.addSequential(Delay(250))
