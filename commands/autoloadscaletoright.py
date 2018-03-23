@@ -43,7 +43,7 @@ class AutoLoadScaleToRight(CommandGroup):
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToRight: Rotate in"))
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToRight: Cube Rotate Level"))
-        self.addSequential(CubeRotateDown(), timeout=2.5)
+        self.addSequential(CubeRotateDown(), timeout=2.0)
 
         self.addSequential(PrintCommand("CMD Group AutoLoadScaleToRight: Cube Raise"))
         self.addSequential(ElevatorMoveToVoltage(2.79), 8)  #make sure we aren't interfering with switch
