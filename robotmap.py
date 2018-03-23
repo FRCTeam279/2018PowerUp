@@ -214,6 +214,10 @@ harvester.rotationPotPort = 9               # analog input
 harvester.relayPortLeft = 0                     # relay port
 harvester.relayPortRight = 1                     # relay port
 
+harvester.motorPortLeft = 6
+harvester.motorPortRight = 7
+harvester.speed = 1.0
+
 harvester.rotateUpSpeed = 0.6
 harvester.rotateDownSpeed = 0.6
 
